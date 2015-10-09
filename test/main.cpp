@@ -1,10 +1,11 @@
 #include <memory>
-#include "EntityEngine.h"
+
+#include "../src/EntityEngine.h"
+
 #include "RenderingSystem.h"
 #include "BackgroundCollisionSystem.h"
 #include "BackgroundCollidableComponent.h"
 #include "RenderableComponent.h"
-#include <algorithm>
 
 using namespace std;
 

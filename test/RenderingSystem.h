@@ -6,7 +6,7 @@
 #define ENTITY_FRAMEWORK_RENDERINGSYSTEM_H
 
 #include <iostream>
-#include "EntitySystem.h"
+#include "../src/EntitySystem.h"
 
 using std::cout;
 using std::endl;

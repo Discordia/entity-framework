@@ -5,8 +5,7 @@
 #ifndef ENTITY_FRAMEWORK_BACKGROUNDCOLLIDABLECOMPONENT_H
 #define ENTITY_FRAMEWORK_BACKGROUNDCOLLIDABLECOMPONENT_H
 
-
-#include "Component.h"
+#include "../src/Component.h"
 
 class BackgroundCollidableComponent : public Component
 {
@@ -15,7 +14,7 @@ public:
     BackgroundCollidableComponent();
     virtual ~BackgroundCollidableComponent();
 
-    virtual int index() override;
+    virtual int index();
 };
 
 

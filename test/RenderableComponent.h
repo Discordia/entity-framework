@@ -6,7 +6,7 @@
 #define ENTITY_FRAMEWORK_RENDERABLECOMPONENT_H
 
 
-#include "Component.h"
+#include "../src/Component.h"
 
 class RenderableComponent : public Component
 {
