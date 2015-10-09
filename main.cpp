@@ -2,10 +2,9 @@
 #include "EntityEngine.h"
 #include "RenderingSystem.h"
 #include "BackgroundCollisionSystem.h"
-#include "Component.h"
 #include "BackgroundCollidableComponent.h"
 #include "RenderableComponent.h"
-#include "Entity.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -29,7 +28,6 @@ int main()
 
         engine->update(deltaTime);
     }
-
 
     return 0;
 }

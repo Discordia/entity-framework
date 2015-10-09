@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 2.8)
 project(entity_framework)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -23,4 +23,4 @@ set(SOURCE_FILES
         EntityOperation.h
         ComponentOperationHandler.h
         ComponentOperationHandler.cpp)
-add_executable(entity_framework ${SOURCE_FILES})
+add_executable(entityframework ${SOURCE_FILES})

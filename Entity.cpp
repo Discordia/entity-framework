@@ -16,12 +16,26 @@ Entity::~Entity()
 
 void Entity::addComponent(shared_ptr<Component> component)
 {
-    componentOperationHandler->add(this, component);
+    if (componentOperationHandler != nullptr)
+    {
+        componentOperationHandler->add(this, component);
+    }
+    else
+    {
+        addInternal(component);
+    }
 }
 
 void Entity::removeComponent(shared_ptr<Component> component)
 {
-    componentOperationHandler->remove(this, component);
+    if (componentOperationHandler != nullptr)
+    {
+        componentOperationHandler->remove(this, component);
+    }
+    else
+    {
+        removeInternal(component);
+    }
 }
 
 int Entity::getUUID()
