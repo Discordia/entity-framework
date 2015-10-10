@@ -3,8 +3,6 @@ project(entity_framework)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-include_directories(${root_SOURCE_DIR}/src)
-
 set(SOURCE_FILES
         test/main.cpp
         src/EntityEngine.cpp
