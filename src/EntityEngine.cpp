@@ -20,6 +20,18 @@ EntityEngine::~EntityEngine()
 {
 }
 
+void EntityEngine::addSystem(shared_ptr<EntitySystem> entitySystem)
+{
+    entitySystem->addedToEngine(shared_from_this());
+    systems.push_back(entitySystem);
+}
+
+void EntityEngine::removeSystem(shared_ptr<EntitySystem> entitySystem)
+{
+    systems.erase(std::remove(systems.begin(), systems.end(), entitySystem), systems.end());
+    entitySystem->removedFromEngine(shared_from_this());
+}
+
 void EntityEngine::addEntity(shared_ptr<Entity> entity)
 {
     if (entity->getUUID() != 0)
@@ -35,7 +47,6 @@ void EntityEngine::addEntity(shared_ptr<Entity> entity)
     entityOperations.push_back(entityOperation);
 }
 
-
 void EntityEngine::removeEntity(shared_ptr<Entity> entity)
 {
     shared_ptr<EntityOperation> entityOperation = shared_ptr<EntityOperation>(
@@ -43,9 +54,26 @@ void EntityEngine::removeEntity(shared_ptr<Entity> entity)
     entityOperations.push_back(entityOperation);
 }
 
-void EntityEngine::addSystem(shared_ptr<EntitySystem> entitySystem)
+const shared_ptr<vector<shared_ptr<Entity>>> EntityEngine::getEntitiesFor(ComponentFamily& componentFamily)
 {
-    systems.push_back(entitySystem);
+    auto keyValueIt = componentFamilies.find(componentFamily);
+
+    if (keyValueIt != componentFamilies.end())
+    {
+        return keyValueIt->second;
+    }
+
+    shared_ptr<vector<shared_ptr<Entity>>> familyEntities(new vector<shared_ptr<Entity>>());
+    std::pair<ComponentFamily, shared_ptr<vector<shared_ptr<Entity>>>> keyValue(componentFamily, familyEntities);
+    componentFamilies.insert(keyValue);
+
+    for (auto entity : entities)
+    {
+        // TODO: optimization - Only interested in the new family
+        updateFamilyMembership(entity);
+    }
+
+    return familyEntities;
 }
 
 void EntityEngine::update(float deltaTime)
@@ -132,4 +160,32 @@ void EntityEngine::processPendingEntityOperations()
     }
 
     entityOperations.clear();
+}
+
+void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity)
+{
+    bool removing = false;
+    bitset<32>& familyBits = entity->getFamilyBits();
+    
+    for (auto entry : componentFamilies)
+    {
+        ComponentFamily family =  entry.first;
+        int familyIndex = family.getIndex();
+
+        // TODO: get rid of cast
+        bool belongsToFamily = familyBits.test(static_cast<size_t>(familyIndex));
+        bool matches = family.matches(entity) && !removing;
+
+        if (belongsToFamily != matches) {
+            auto familyEntities = entry.second;
+            
+            if (matches) {
+                familyEntities->push_back(entity);
+                familyBits.set(static_cast<size_t>(familyIndex));
+            } else {
+                familyEntities->erase(std::remove(familyEntities->begin(), familyEntities->end(), entity), familyEntities->end());
+                familyBits.reset(static_cast<size_t>(familyIndex));
+            }
+        }
+    }
 }

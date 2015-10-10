@@ -11,16 +11,13 @@
 class RenderableComponent : public Component
 {
 public:
+    RenderableComponent() {}
+    ~RenderableComponent() {}
 
-    RenderableComponent()
-    { }
+    int index();
 
-
-    virtual ~RenderableComponent()
-    { }
-
-
-    virtual int index() override;
+public:
+    static int INDEX;
 };
 
 

@@ -7,25 +7,32 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
 #include "Entity.h"
 #include "EntityOperation.h"
 #include "ComponentOperationHandler.h"
+#include "ComponentFamily.h"
 
 using std::shared_ptr;
 using std::vector;
+using std::unordered_map;
+using std::enable_shared_from_this;
 
 class EntitySystem;
 
-class EntityEngine
+class EntityEngine : public enable_shared_from_this<EntityEngine>
 {
 public :
     EntityEngine();
     ~EntityEngine();
 
     void addSystem(shared_ptr<EntitySystem> entitySystem);
+    void removeSystem(shared_ptr<EntitySystem> entitySystem);
 
     void addEntity(shared_ptr<Entity> entity);
     void removeEntity(shared_ptr<Entity> entity);
+
+    const shared_ptr<vector<shared_ptr<Entity>>> getEntitiesFor(ComponentFamily& componentFamily);
 
     void update(float deltaTime);
     void refresh();
@@ -42,6 +49,7 @@ private:
 
     void processPendingComponentOperations();
     void processPendingEntityOperations();
+    void updateFamilyMembership(shared_ptr<Entity> entity);
 
 private:
     bool updating;
@@ -51,6 +59,7 @@ private:
     vector<shared_ptr<ComponentOperation>> componentOperations;
     vector<shared_ptr<Entity>> entities;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
+    unordered_map<ComponentFamily, shared_ptr<vector<shared_ptr<Entity>>>, ComponentFamilyHasher> componentFamilies;
 };
 
 

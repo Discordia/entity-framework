@@ -8,29 +8,37 @@
 
 #include <bitset>
 #include <memory>
+#include <unordered_map>
 #include "Entity.h"
 
 using std::shared_ptr;
 using std::bitset;
+using std::unordered_map;
 
+struct ComponentFamilyHasher;
 class FamilyBuilder;
 
 class ComponentFamily
 {
 public:
-    ComponentFamily();
+    ComponentFamily(bitset<32> allBits, bitset<32> oneBits, bitset<32> excludedBits);
     ~ComponentFamily();
+
+    inline bool operator==(const ComponentFamily& other) const { return this->index == other.index; }
+    inline bool operator!=(const ComponentFamily& other) const { return this->index != other.index;}
 
     int getIndex();
     bool matches(shared_ptr<Entity> entity);
 
-    static shared_ptr<FamilyBuilder> all(std::initializer_list<int> componentIndices);
-    static shared_ptr<FamilyBuilder> one(std::initializer_list<int> componentIndices);
-    static shared_ptr<FamilyBuilder> exclude(std::initializer_list<int> componentIndices);
+    static FamilyBuilder* all(std::initializer_list<int> componentIndices);
+    static FamilyBuilder* one(std::initializer_list<int> componentIndices);
+    static FamilyBuilder* exclude(std::initializer_list<int> componentIndices);
 
 private:
+    friend struct ComponentFamilyHasher;
+
     static int family_index;
-    static shared_ptr<FamilyBuilder> familyBuilder;
+    static FamilyBuilder* familyBuilder;
 
     int index;
     bitset<32> allBits;
@@ -38,22 +46,45 @@ private:
     bitset<32> excludedBits;
 };
 
-class FamilyBuilder : std::enable_shared_from_this<FamilyBuilder>
+class FamilyBuilder
 {
 public:
     FamilyBuilder();
     ~FamilyBuilder();
 
-    shared_ptr<FamilyBuilder> reset();
-    shared_ptr<FamilyBuilder> all(std::initializer_list<int> componentIndices);
-    shared_ptr<FamilyBuilder> one(std::initializer_list<int> componentIndices);
-    shared_ptr<FamilyBuilder> exclude(std::initializer_list<int> componentIndices);
+    FamilyBuilder* reset();
+    FamilyBuilder* all(std::initializer_list<int> componentIndices);
+    FamilyBuilder* one(std::initializer_list<int> componentIndices);
+    FamilyBuilder* exclude(std::initializer_list<int> componentIndices);
+
+    shared_ptr<ComponentFamily> build();
+
+private:
+    static const std::string calcFamilyHash(bitset<32>& allBits, bitset<32>& oneBits, bitset<32>& excludedBits);
 
 private:
     bitset<32> allBits;
     bitset<32> oneBits;
     bitset<32> excludedBits;
+
+    static unordered_map<std::string, shared_ptr<ComponentFamily>> families;
 };
 
+struct ComponentFamilyHasher
+{
+    template <class T>
+    inline void hash_combine(std::size_t & seed, const T & v) const
+    {
+        std::hash<T> hasher;
+        seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    }
+
+    inline std::size_t operator()(const ComponentFamily& componentFamily) const
+    {
+        size_t seed = 0;
+        hash_combine(seed, componentFamily.index);
+        return seed;
+    }
+};
 
 #endif //ENTITY_FRAMEWORK_COMPONENTFAMILY_H

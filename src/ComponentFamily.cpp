@@ -5,14 +5,13 @@
 #include "ComponentFamily.h"
 #include "BitSetUtility.h"
 
+// static init
 int ComponentFamily::family_index = 0;
+FamilyBuilder* ComponentFamily::familyBuilder = new FamilyBuilder();
+unordered_map<std::string, shared_ptr<ComponentFamily>> FamilyBuilder::families;
 
-shared_ptr<FamilyBuilder> ComponentFamily::familyBuilder;
-
-const bitset<32> ZERO_BITS;
-
-ComponentFamily::ComponentFamily()
-    : index(family_index++)
+ComponentFamily::ComponentFamily(bitset<32> allBits, bitset<32> oneBits, bitset<32> excludedBits)
+    : index(family_index++), allBits(allBits), oneBits(oneBits), excludedBits(excludedBits)
 {
 }
 
@@ -47,19 +46,19 @@ bool ComponentFamily::matches(shared_ptr<Entity> entity)
     return true;
 }
 
-shared_ptr<FamilyBuilder> ComponentFamily::all(std::initializer_list<int> componentIndices)
+FamilyBuilder* ComponentFamily::all(std::initializer_list<int> componentIndices)
 {
     return familyBuilder->reset()->all(componentIndices);
 }
 
-shared_ptr<FamilyBuilder> ComponentFamily::one(std::initializer_list<int> componentIndices)
+FamilyBuilder* ComponentFamily::one(std::initializer_list<int> componentIndices)
 {
-    return familyBuilder;
+    return familyBuilder->reset()->one(componentIndices);
 }
 
-shared_ptr<FamilyBuilder> ComponentFamily::exclude(std::initializer_list<int> componentIndices)
+FamilyBuilder* ComponentFamily::exclude(std::initializer_list<int> componentIndices)
 {
-    return familyBuilder;
+    return familyBuilder->reset()->exclude(componentIndices);
 }
 
 FamilyBuilder::FamilyBuilder()
@@ -70,41 +69,82 @@ FamilyBuilder::~FamilyBuilder()
 {
 }
 
-shared_ptr<FamilyBuilder> FamilyBuilder::reset()
+FamilyBuilder* FamilyBuilder::reset()
 {
-    allBits = ZERO_BITS;
-    oneBits = ZERO_BITS;
-    excludedBits = ZERO_BITS;
+    allBits = bitset<32>();
+    oneBits = bitset<32>();
+    excludedBits = bitset<32>();
 
-    return shared_from_this();
+    return this;
 }
 
-shared_ptr<FamilyBuilder> FamilyBuilder::all(std::initializer_list<int> componentIndices)
+FamilyBuilder* FamilyBuilder::all(std::initializer_list<int> componentIndices)
 {
     for (auto index : componentIndices)
     {
         allBits.set(static_cast<size_t>(index));
     }
 
-    return shared_from_this();
+    return this;
 }
 
-shared_ptr<FamilyBuilder> FamilyBuilder::one(std::initializer_list<int> componentIndices)
+FamilyBuilder* FamilyBuilder::one(std::initializer_list<int> componentIndices)
 {
     for (auto index : componentIndices)
     {
         oneBits.set(static_cast<size_t>(index));
     }
 
-    return shared_from_this();
+    return this;
 }
 
-shared_ptr<FamilyBuilder> FamilyBuilder::exclude(std::initializer_list<int> componentIndices)
+FamilyBuilder* FamilyBuilder::exclude(std::initializer_list<int> componentIndices)
 {
     for (auto index : componentIndices)
     {
         excludedBits.set(static_cast<size_t>(index));
     }
 
-    return shared_from_this();
+    return this;
+}
+
+shared_ptr<ComponentFamily> FamilyBuilder::build()
+{
+    const std::string familyHash = calcFamilyHash(allBits, oneBits, excludedBits);
+    auto familyIt = FamilyBuilder::families.find(familyHash);
+    if (familyIt != FamilyBuilder::families.end())
+    {
+        return familyIt->second;
+    }
+
+    shared_ptr<ComponentFamily> family = shared_ptr<ComponentFamily>(new ComponentFamily(allBits, oneBits, excludedBits));
+    FamilyBuilder::families.insert(std::make_pair(familyHash, family));
+    return family;
+}
+
+const std::string FamilyBuilder::calcFamilyHash(bitset<32>& allBits, bitset<32>& oneBits, bitset<32>& excludedBits)
+{
+    std::string familyHash;
+    if (allBits.any())
+    {
+        familyHash.append("all{");
+        familyHash.append(allBits.to_string());
+        familyHash.append("}");
+    }
+
+    if (oneBits.any())
+    {
+        familyHash.append("one{");
+        familyHash.append(oneBits.to_string());
+        familyHash.append("}");
+    }
+
+    if (excludedBits.any())
+    {
+        familyHash.append("excluded{");
+        familyHash.append(excludedBits.to_string());
+        familyHash.append("}");
+    }
+
+    return familyHash;
 }

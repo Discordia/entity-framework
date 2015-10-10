@@ -15,6 +15,9 @@ public:
     virtual ~BackgroundCollidableComponent();
 
     virtual int index();
+
+public:
+    static int INDEX;
 };
 
 

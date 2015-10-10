@@ -48,6 +48,11 @@ bitset<32>& Entity::getComponentBits()
     return componentBits;
 }
 
+bitset<32>& Entity::getFamilyBits()
+{
+    return familyBits;
+}
+
 void Entity::setUUID(int uuid)
 {
     this->uuid = uuid;

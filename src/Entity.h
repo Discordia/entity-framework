@@ -29,6 +29,7 @@ public:
     void removeComponent(shared_ptr<Component> component);
 
     bitset<32>& getComponentBits();
+    bitset<32>& getFamilyBits();
 
 private:
     friend class EntityEngine;
@@ -43,6 +44,7 @@ private:
     vector<shared_ptr<Component>> components;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
     bitset<32> componentBits;
+    bitset<32> familyBits;
 };
 
 

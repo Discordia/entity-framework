@@ -13,6 +13,8 @@ using std::endl;
 
 class RenderingSystem : public EntitySystem
 {
+
+
     void update(float deltaTime) {
         cout << "Rendering..." << endl;
     }
