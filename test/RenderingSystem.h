@@ -1,7 +1,3 @@
-//
-// Created by roberts on 2015-10-06.
-//
-
 #ifndef ENTITY_FRAMEWORK_RENDERINGSYSTEM_H
 #define ENTITY_FRAMEWORK_RENDERINGSYSTEM_H
 
@@ -32,6 +28,5 @@ private:
     shared_ptr<vector<shared_ptr<Entity>>> entities;
 };
 
-
-#endif //ENTITY_FRAMEWORK_RENDERINGSYSTEM_H
+#endif
 

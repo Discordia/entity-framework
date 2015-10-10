@@ -1,7 +1,3 @@
-//
-// Created by roberts on 2015-10-06.
-//
-
 #ifndef ENTITY_FRAMEWORK_ENTITYENGINE_H
 #define ENTITY_FRAMEWORK_ENTITYENGINE_H
 
@@ -63,4 +59,4 @@ private:
 };
 
 
-#endif //ENTITY_FRAMEWORK_ENTITYENGINE_H
+#endif

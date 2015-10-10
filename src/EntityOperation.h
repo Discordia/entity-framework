@@ -1,7 +1,3 @@
-//
-// Created by roberts on 2015-10-08.
-//
-
 #ifndef ENTITY_FRAMEWORK_ENTITYOPERATION_H
 #define ENTITY_FRAMEWORK_ENTITYOPERATION_H
 
@@ -25,5 +21,4 @@ public:
     EntityOperationType type;
 };
 
-
-#endif //ENTITY_FRAMEWORK_ENTITYOPERATION_H
+#endif

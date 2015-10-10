@@ -1,10 +1,5 @@
-//
-// Created by roberts on 2015-10-06.
-//
-
 #ifndef ENTITY_FRAMEWORK_BACKGROUNDCOLLISIONSYSTEM_H
 #define ENTITY_FRAMEWORK_BACKGROUNDCOLLISIONSYSTEM_H
-
 
 #include <iostream>
 #include "../src/EntitySystem.h"
@@ -32,5 +27,4 @@ private:
     shared_ptr<vector<shared_ptr<Entity>>> entities;
 };
 
-
-#endif //ENTITY_FRAMEWORK_BACKGROUNDCOLLISIONSYSTEM_H
+#endif

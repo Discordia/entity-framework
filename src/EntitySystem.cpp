@@ -1,7 +1,3 @@
-//
-// Created by roberts on 2015-10-06.
-//
-
 #include "EntitySystem.h"
 #include "EntityEngine.h"
 

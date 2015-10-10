@@ -1,7 +1,3 @@
-//
-// Created by roberts on 2015-10-06.
-//
-
 #ifndef ENTITY_FRAMEWORK_ENTITYSYSTEM_H
 #define ENTITY_FRAMEWORK_ENTITYSYSTEM_H
 
@@ -22,5 +18,4 @@ public:
     virtual void update(float deltaTime);
 };
 
-
-#endif //ENTITY_FRAMEWORK_ENTITYSYSTEM_H
+#endif

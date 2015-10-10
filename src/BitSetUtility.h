@@ -1,7 +1,3 @@
-//
-// Created by roberts on 2015-10-09.
-//
-
 #ifndef ENTITY_FRAMEWORK_BITSETUTILITY_H
 #define ENTITY_FRAMEWORK_BITSETUTILITY_H
 
@@ -31,5 +27,5 @@ public:
 };
 
 
-#endif //ENTITY_FRAMEWORK_BITSETUTILITY_H
+#endif
 

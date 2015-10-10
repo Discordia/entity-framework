@@ -1,7 +1,3 @@
-//
-// Created by roberts on 2015-10-09.
-//
-
 #ifndef ENTITY_FRAMEWORK_COMPONENTFAMILY_H
 #define ENTITY_FRAMEWORK_COMPONENTFAMILY_H
 
@@ -87,4 +83,4 @@ struct ComponentFamilyHasher
     }
 };
 
-#endif //ENTITY_FRAMEWORK_COMPONENTFAMILY_H
+#endif

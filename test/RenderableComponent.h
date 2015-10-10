@@ -1,10 +1,5 @@
-//
-// Created by roberts on 2015-10-06.
-//
-
 #ifndef ENTITY_FRAMEWORK_RENDERABLECOMPONENT_H
 #define ENTITY_FRAMEWORK_RENDERABLECOMPONENT_H
-
 
 #include "../src/Component.h"
 
@@ -27,4 +22,4 @@ int RenderableComponent::index()
     return INDEX;
 }
 
-#endif //ENTITY_FRAMEWORK_RENDERABLECOMPONENT_H
+#endif

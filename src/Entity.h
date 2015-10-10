@@ -1,10 +1,5 @@
-//
-// Created by roberts on 2015-10-06.
-//
-
 #ifndef ENTITY_FRAMEWORK_ENTITY_H
 #define ENTITY_FRAMEWORK_ENTITY_H
-
 
 #include <memory>
 #include <vector>

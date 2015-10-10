@@ -1,7 +1,3 @@
-//
-// Created by roberts on 2015-10-09.
-//
-
 #include "ComponentFamily.h"
 #include "BitSetUtility.h"
 
