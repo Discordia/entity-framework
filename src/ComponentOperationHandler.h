@@ -16,13 +16,13 @@ public:
         REMOVE
     };
 
-    ComponentOperation(Entity* entity, shared_ptr<Component> component, ComponentOperationType type);
+    ComponentOperation(shared_ptr<Entity> entity, shared_ptr<Component> component, ComponentOperationType type);
 
-    static shared_ptr<ComponentOperation> createAdd(Entity* entity, shared_ptr<Component> component);
-    static shared_ptr<ComponentOperation> createRemove(Entity* entity, shared_ptr<Component> component);
+    static shared_ptr<ComponentOperation> createAdd(shared_ptr<Entity> entity, shared_ptr<Component> component);
+    static shared_ptr<ComponentOperation> createRemove(shared_ptr<Entity> entity, shared_ptr<Component> component);
 
 public:
-    Entity* entity;
+    shared_ptr<Entity> entity;
     shared_ptr<Component> component;
     ComponentOperationType type;
 };
@@ -32,8 +32,8 @@ class ComponentOperationHandler
 public:
     ComponentOperationHandler(EntityEngine* engine);
 
-    void add(Entity* entity, shared_ptr<Component> component);
-    void remove(Entity* entity, shared_ptr<Component> component);
+    void add(shared_ptr<Entity> entity, shared_ptr<Component> component);
+    void remove(shared_ptr<Entity> entity, shared_ptr<Component> component);
 
 private:
     EntityEngine* engine;

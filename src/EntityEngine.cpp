@@ -136,6 +136,8 @@ void EntityEngine::processPendingComponentOperations()
                 entity->removeInternal(component);
                 break;
         }
+
+        updateFamilyMembership(entity);
     }
 
     componentOperations.clear();
@@ -151,10 +153,12 @@ void EntityEngine::processPendingEntityOperations()
         {
             case EntityOperation::ADD:
                 addEntityInternal(entity);
+                updateFamilyMembership(entity);
                 break;
 
             case EntityOperation::REMOVE:
                 removeEntityInternal(entity);
+                updateFamilyMembership(entity, true);
                 break;
         }
     }
@@ -162,9 +166,8 @@ void EntityEngine::processPendingEntityOperations()
     entityOperations.clear();
 }
 
-void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity)
+void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removing)
 {
-    bool removing = false;
     bitset<32>& familyBits = entity->getFamilyBits();
     
     for (auto entry : componentFamilies)

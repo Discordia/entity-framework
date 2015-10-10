@@ -28,7 +28,7 @@ bool ComponentFamily::matches(shared_ptr<Entity> entity)
 {
     bitset<32>& componentBits = entity->getComponentBits();
 
-    if (BitSetUtility::containsAll(componentBits, allBits))
+    if (!BitSetUtility::containsAll(componentBits, allBits))
     {
         return false;
     }

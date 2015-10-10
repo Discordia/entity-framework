@@ -23,7 +23,7 @@ void Entity::addComponent(shared_ptr<Component> component)
 {
     if (componentOperationHandler != nullptr)
     {
-        componentOperationHandler->add(this, component);
+        componentOperationHandler->add(shared_from_this(), component);
     }
     else
     {
@@ -35,7 +35,7 @@ void Entity::removeComponent(shared_ptr<Component> component)
 {
     if (componentOperationHandler != nullptr)
     {
-        componentOperationHandler->remove(this, component);
+        componentOperationHandler->remove(shared_from_this(), component);
     }
     else
     {

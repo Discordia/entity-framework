@@ -38,8 +38,8 @@ public :
     void refresh();
 
 private:
-    friend void ComponentOperationHandler::add(Entity*, shared_ptr<Component>);
-    friend void ComponentOperationHandler::remove(Entity*, shared_ptr<Component>);
+    friend void ComponentOperationHandler::add(shared_ptr<Entity>, shared_ptr<Component>);
+    friend void ComponentOperationHandler::remove(shared_ptr<Entity>, shared_ptr<Component>);
 
     void addComponentOperation(shared_ptr<ComponentOperation> componentOperation);
 
@@ -49,7 +49,7 @@ private:
 
     void processPendingComponentOperations();
     void processPendingEntityOperations();
-    void updateFamilyMembership(shared_ptr<Entity> entity);
+    void updateFamilyMembership(shared_ptr<Entity> entity, bool removing = false);
 
 private:
     bool updating;
