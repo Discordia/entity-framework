@@ -5,19 +5,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
         test/main.cpp
+        test/BackgroundCollidableComponent.cpp
+        test/BackgroundCollidableComponent.h
+        test/RenderableComponent.h
+        test/RenderingSystem.h
+        test/BackgroundCollisionSystem.h
         src/EntityEngine.cpp
         src/EntityEngine.h
         src/EntitySystem.h
-        test/RenderingSystem.cpp
-        test/RenderingSystem.h
         src/EntitySystem.cpp
-        test/BackgroundCollisionSystem.cpp
-        test/BackgroundCollisionSystem.h
         src/Component.h
-        test/BackgroundCollidableComponent.cpp
-        test/BackgroundCollidableComponent.h
-        test/RenderableComponent.cpp
-        test/RenderableComponent.h
         src/Entity.cpp
         src/Entity.h
         src/EntityOperation.h

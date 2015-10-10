@@ -10,15 +10,16 @@
 class BackgroundCollidableComponent : public Component
 {
 public:
+    BackgroundCollidableComponent() {}
+    ~BackgroundCollidableComponent() {}
 
-    BackgroundCollidableComponent();
-    virtual ~BackgroundCollidableComponent();
-
-    virtual int index();
+    int index();
 
 public:
     static int INDEX;
 };
+
+
 
 
 #endif //ENTITY_FRAMEWORK_BACKGROUNDCOLLIDABLECOMPONENT_H

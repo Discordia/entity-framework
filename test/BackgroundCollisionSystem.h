@@ -25,8 +25,7 @@ public:
     }
 
     void update(float deltaTime) {
-        cout << "Number of entites: " << entities->size() << endl;
-        cout << "Colliding..." << endl;
+        cout << "Colliding..., entities: " << entities->size() << endl;
     }
 
 private:

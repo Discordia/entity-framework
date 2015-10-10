@@ -20,5 +20,11 @@ public:
     static int INDEX;
 };
 
+int RenderableComponent::INDEX = 1;
+
+int RenderableComponent::index()
+{
+    return INDEX;
+}
 
 #endif //ENTITY_FRAMEWORK_RENDERABLECOMPONENT_H
