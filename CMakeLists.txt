@@ -24,5 +24,8 @@ set(SOURCE_FILES
         src/Entity.h
         src/EntityOperation.h
         src/ComponentOperationHandler.h
-        src/ComponentOperationHandler.cpp)
+        src/ComponentOperationHandler.cpp
+        src/ComponentFamily.cpp
+        src/ComponentFamily.h
+        src/BitSetUtility.h)
 add_executable(entityframework ${SOURCE_FILES})

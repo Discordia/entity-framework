@@ -8,10 +8,12 @@
 
 #include <memory>
 #include <vector>
+#include <bitset>
 #include "Component.h"
 
 using std::shared_ptr;
 using std::vector;
+using std::bitset;
 
 class ComponentOperationHandler;
 
@@ -26,6 +28,8 @@ public:
     void addComponent(shared_ptr<Component> component);
     void removeComponent(shared_ptr<Component> component);
 
+    bitset<32>& getComponentBits();
+
 private:
     friend class EntityEngine;
 
@@ -33,10 +37,12 @@ private:
     void addInternal(shared_ptr<Component> component);
     void removeInternal(shared_ptr<Component> component);
 
+
 private:
     int uuid;
     vector<shared_ptr<Component>> components;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
+    bitset<32> componentBits;
 };
 
 

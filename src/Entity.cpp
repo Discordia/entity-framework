@@ -14,6 +14,11 @@ Entity::~Entity()
 {
 }
 
+int Entity::getUUID()
+{
+    return uuid;
+}
+
 void Entity::addComponent(shared_ptr<Component> component)
 {
     if (componentOperationHandler != nullptr)
@@ -38,9 +43,9 @@ void Entity::removeComponent(shared_ptr<Component> component)
     }
 }
 
-int Entity::getUUID()
+bitset<32>& Entity::getComponentBits()
 {
-    return uuid;
+    return componentBits;
 }
 
 void Entity::setUUID(int uuid)
@@ -61,6 +66,7 @@ void Entity::addInternal(shared_ptr<Component> component)
     }
 
     components[component->index()] = component;
+    componentBits.set(static_cast<size_t>(component->index()));
 }
 
 void Entity::removeInternal(shared_ptr<Component> component)
@@ -71,4 +77,5 @@ void Entity::removeInternal(shared_ptr<Component> component)
     }
 
     components[component->index()] = nullptr;
+    componentBits.reset(static_cast<size_t>(component->index()));
 }
