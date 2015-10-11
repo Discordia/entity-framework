@@ -3,8 +3,8 @@
 
 // static init
 int ComponentFamily::family_index = 0;
-FamilyBuilder* ComponentFamily::familyBuilder = new FamilyBuilder();
-unordered_map<std::string, shared_ptr<ComponentFamily>> FamilyBuilder::families;
+ComponentFamilyBuilder* ComponentFamily::familyBuilder = new ComponentFamilyBuilder();
+unordered_map<std::string, shared_ptr<ComponentFamily>> ComponentFamilyBuilder::families;
 
 ComponentFamily::ComponentFamily(bitset<32> allBits, bitset<32> oneBits, bitset<32> excludedBits)
     : index(family_index++), allBits(allBits), oneBits(oneBits), excludedBits(excludedBits)
@@ -52,30 +52,30 @@ bool ComponentFamily::matches(shared_ptr<Entity> entity)
     return true;
 }
 
-FamilyBuilder* ComponentFamily::all(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamily::all(std::initializer_list<int> componentIndices)
 {
     return familyBuilder->reset()->all(componentIndices);
 }
 
-FamilyBuilder* ComponentFamily::one(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamily::one(std::initializer_list<int> componentIndices)
 {
     return familyBuilder->reset()->one(componentIndices);
 }
 
-FamilyBuilder* ComponentFamily::exclude(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamily::exclude(std::initializer_list<int> componentIndices)
 {
     return familyBuilder->reset()->exclude(componentIndices);
 }
 
-FamilyBuilder::FamilyBuilder()
+ComponentFamilyBuilder::ComponentFamilyBuilder()
 {
 }
 
-FamilyBuilder::~FamilyBuilder()
+ComponentFamilyBuilder::~ComponentFamilyBuilder()
 {
 }
 
-FamilyBuilder* FamilyBuilder::reset()
+ComponentFamilyBuilder* ComponentFamilyBuilder::reset()
 {
     allBits = bitset<32>();
     oneBits = bitset<32>();
@@ -84,7 +84,7 @@ FamilyBuilder* FamilyBuilder::reset()
     return this;
 }
 
-FamilyBuilder* FamilyBuilder::all(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamilyBuilder::all(std::initializer_list<int> componentIndices)
 {
     for (auto index : componentIndices)
     {
@@ -94,7 +94,7 @@ FamilyBuilder* FamilyBuilder::all(std::initializer_list<int> componentIndices)
     return this;
 }
 
-FamilyBuilder* FamilyBuilder::one(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamilyBuilder::one(std::initializer_list<int> componentIndices)
 {
     for (auto index : componentIndices)
     {
@@ -104,7 +104,7 @@ FamilyBuilder* FamilyBuilder::one(std::initializer_list<int> componentIndices)
     return this;
 }
 
-FamilyBuilder* FamilyBuilder::exclude(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamilyBuilder::exclude(std::initializer_list<int> componentIndices)
 {
     for (auto index : componentIndices)
     {
@@ -114,21 +114,21 @@ FamilyBuilder* FamilyBuilder::exclude(std::initializer_list<int> componentIndice
     return this;
 }
 
-shared_ptr<ComponentFamily> FamilyBuilder::build()
+shared_ptr<ComponentFamily> ComponentFamilyBuilder::build()
 {
     const std::string familyHash = calcFamilyHash(allBits, oneBits, excludedBits);
-    auto familyIt = FamilyBuilder::families.find(familyHash);
-    if (familyIt != FamilyBuilder::families.end())
+    auto familyIt = ComponentFamilyBuilder::families.find(familyHash);
+    if (familyIt != ComponentFamilyBuilder::families.end())
     {
         return familyIt->second;
     }
 
     shared_ptr<ComponentFamily> family = shared_ptr<ComponentFamily>(new ComponentFamily(allBits, oneBits, excludedBits));
-    FamilyBuilder::families.insert(std::make_pair(familyHash, family));
+    ComponentFamilyBuilder::families.insert(std::make_pair(familyHash, family));
     return family;
 }
 
-const std::string FamilyBuilder::calcFamilyHash(bitset<32>& allBits, bitset<32>& oneBits, bitset<32>& excludedBits)
+const std::string ComponentFamilyBuilder::calcFamilyHash(bitset<32>& allBits, bitset<32>& oneBits, bitset<32>& excludedBits)
 {
     std::string familyHash;
     if (allBits.any())

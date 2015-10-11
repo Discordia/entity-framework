@@ -12,7 +12,7 @@ using std::bitset;
 using std::unordered_map;
 
 struct ComponentFamilyHasher;
-class FamilyBuilder;
+class ComponentFamilyBuilder;
 
 class ComponentFamily
 {
@@ -26,15 +26,15 @@ public:
     int getIndex();
     bool matches(shared_ptr<Entity> entity);
 
-    static FamilyBuilder* all(std::initializer_list<int> componentIndices);
-    static FamilyBuilder* one(std::initializer_list<int> componentIndices);
-    static FamilyBuilder* exclude(std::initializer_list<int> componentIndices);
+    static ComponentFamilyBuilder* all(std::initializer_list<int> componentIndices);
+    static ComponentFamilyBuilder* one(std::initializer_list<int> componentIndices);
+    static ComponentFamilyBuilder* exclude(std::initializer_list<int> componentIndices);
 
 private:
     friend struct ComponentFamilyHasher;
 
     static int family_index;
-    static FamilyBuilder* familyBuilder;
+    static ComponentFamilyBuilder* familyBuilder;
 
     int index;
     bitset<32> allBits;
@@ -42,16 +42,16 @@ private:
     bitset<32> excludedBits;
 };
 
-class FamilyBuilder
+class ComponentFamilyBuilder
 {
 public:
-    FamilyBuilder();
-    ~FamilyBuilder();
+    ComponentFamilyBuilder();
+    ~ComponentFamilyBuilder();
 
-    FamilyBuilder* reset();
-    FamilyBuilder* all(std::initializer_list<int> componentIndices);
-    FamilyBuilder* one(std::initializer_list<int> componentIndices);
-    FamilyBuilder* exclude(std::initializer_list<int> componentIndices);
+    ComponentFamilyBuilder* reset();
+    ComponentFamilyBuilder* all(std::initializer_list<int> componentIndices);
+    ComponentFamilyBuilder* one(std::initializer_list<int> componentIndices);
+    ComponentFamilyBuilder* exclude(std::initializer_list<int> componentIndices);
 
     shared_ptr<ComponentFamily> build();
 
