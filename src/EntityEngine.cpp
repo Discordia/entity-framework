@@ -32,22 +32,19 @@ void EntityEngine::addEntity(shared_ptr<Entity> entity)
 {
     if (entity->getUUID() != 0)
     {
-        // TODO: handle error
         return;
     }
 
     entity->setUUID(entityUUIDs++);
 
-    shared_ptr<EntityOperation> entityOperation = shared_ptr<EntityOperation>(
-            new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
-    entityOperations.push_back(entityOperation);
+    shared_ptr<EntityOperation> operatorion = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
+    entityOperations.push_back(operatorion);
 }
 
 void EntityEngine::removeEntity(shared_ptr<Entity> entity)
 {
-    shared_ptr<EntityOperation> entityOperation = shared_ptr<EntityOperation>(
-            new EntityOperation(entity, EntityOperation::EntityOperationType::REMOVE));
-    entityOperations.push_back(entityOperation);
+    shared_ptr<EntityOperation> operatorion = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::REMOVE));
+    entityOperations.push_back(operatorion);
 }
 
 const shared_ptr<vector<shared_ptr<Entity>>> EntityEngine::getEntitiesFor(ComponentFamily& componentFamily)
@@ -59,8 +56,8 @@ const shared_ptr<vector<shared_ptr<Entity>>> EntityEngine::getEntitiesFor(Compon
         return keyValueIt->second;
     }
 
-    shared_ptr<vector<shared_ptr<Entity>>> familyEntities(new vector<shared_ptr<Entity>>());
-    std::pair<ComponentFamily, shared_ptr<vector<shared_ptr<Entity>>>> keyValue(componentFamily, familyEntities);
+    vector_ptr<entity_ptr> familyEntities(new vector<entity_ptr>());
+    std::pair<ComponentFamily, vector_ptr<entity_ptr>> keyValue(componentFamily, familyEntities);
     componentFamilies.insert(keyValue);
 
     for (auto entity : entities)
@@ -72,14 +69,13 @@ const shared_ptr<vector<shared_ptr<Entity>>> EntityEngine::getEntitiesFor(Compon
     return familyEntities;
 }
 
-void EntityEngine::update(float deltaTime)
+bool EntityEngine::update(float deltaTime)
 {
     refresh();
 
     if (updating)
     {
-        // TODO: handle error
-        return;
+        return false;
     }
 
     updating = true;
@@ -91,6 +87,8 @@ void EntityEngine::update(float deltaTime)
     }
 
     updating = false;
+
+    return true;
 }
 
 void EntityEngine::refresh()
@@ -169,10 +167,9 @@ void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removi
     for (auto entry : componentFamilies)
     {
         ComponentFamily family =  entry.first;
-        int familyIndex = family.getIndex();
+        size_t familyIndex = static_cast<size_t>(family.getIndex());
 
-        // TODO: get rid of cast
-        bool belongsToFamily = familyBits.test(static_cast<size_t>(familyIndex));
+        bool belongsToFamily = familyBits.test(familyIndex);
         bool matches = family.matches(entity) && !removing;
 
         if (belongsToFamily != matches) {
@@ -180,10 +177,10 @@ void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removi
             
             if (matches) {
                 familyEntities->push_back(entity);
-                familyBits.set(static_cast<size_t>(familyIndex));
+                familyBits.set(familyIndex);
             } else {
                 familyEntities->erase(std::remove(familyEntities->begin(), familyEntities->end(), entity), familyEntities->end());
-                familyBits.reset(static_cast<size_t>(familyIndex));
+                familyBits.reset(familyIndex);
             }
         }
     }

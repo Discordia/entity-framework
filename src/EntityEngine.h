@@ -16,6 +16,9 @@ using std::enable_shared_from_this;
 
 class EntitySystem;
 
+template<class T> using  vector_ptr = shared_ptr<vector<T>> ;
+typedef shared_ptr<Entity> entity_ptr;
+
 class EntityEngine : public enable_shared_from_this<EntityEngine>
 {
 public :
@@ -30,7 +33,7 @@ public :
 
     const shared_ptr<vector<shared_ptr<Entity>>> getEntitiesFor(ComponentFamily& componentFamily);
 
-    void update(float deltaTime);
+    bool update(float deltaTime);
     void refresh();
 
 private:
@@ -55,7 +58,7 @@ private:
     vector<shared_ptr<ComponentOperation>> componentOperations;
     vector<shared_ptr<Entity>> entities;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
-    unordered_map<ComponentFamily, shared_ptr<vector<shared_ptr<Entity>>>, ComponentFamilyHasher> componentFamilies;
+    unordered_map<ComponentFamily, vector_ptr<entity_ptr>, ComponentFamilyHasher> componentFamilies;
 };
 
 
