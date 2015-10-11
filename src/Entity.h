@@ -33,7 +33,6 @@ private:
     void addInternal(shared_ptr<Component> component);
     void removeInternal(shared_ptr<Component> component);
 
-
 private:
     int uuid;
     vector<shared_ptr<Component>> components;
@@ -42,5 +41,4 @@ private:
     bitset<32> familyBits;
 };
 
-
-#endif //ENTITY_FRAMEWORK_ENTITY_H
+#endif
