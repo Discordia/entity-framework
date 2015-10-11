@@ -15,6 +15,16 @@ ComponentFamily::~ComponentFamily()
 {
 }
 
+bool ComponentFamily::operator==(const ComponentFamily& other) const
+{
+    return this->index == other.index;
+}
+
+bool ComponentFamily::operator!=(const ComponentFamily& other) const
+{
+    return this->index != other.index;
+}
+
 int ComponentFamily::getIndex()
 {
     return index;

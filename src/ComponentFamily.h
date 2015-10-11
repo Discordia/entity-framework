@@ -20,8 +20,8 @@ public:
     ComponentFamily(bitset<32> allBits, bitset<32> oneBits, bitset<32> excludedBits);
     ~ComponentFamily();
 
-    inline bool operator==(const ComponentFamily& other) const { return this->index == other.index; }
-    inline bool operator!=(const ComponentFamily& other) const { return this->index != other.index;}
+    bool operator==(const ComponentFamily& other) const;
+    bool operator!=(const ComponentFamily& other) const;
 
     int getIndex();
     bool matches(shared_ptr<Entity> entity);
