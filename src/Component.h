@@ -1,6 +1,7 @@
 #ifndef ENTITY_FRAMEWORK_COMPONENT_H
 #define ENTITY_FRAMEWORK_COMPONENT_H
 
+#include <cstddef>
 
 class Component
 {
@@ -8,7 +9,7 @@ public:
     Component() {}
     virtual ~Component() {}
 
-    virtual int index() = 0;
+    virtual size_t index() = 0;
 };
 
 #endif

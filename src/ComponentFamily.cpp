@@ -25,7 +25,7 @@ bool ComponentFamily::operator!=(const ComponentFamily& other) const
     return this->index != other.index;
 }
 
-int ComponentFamily::getIndex()
+size_t ComponentFamily::getIndex()
 {
     return index;
 }
@@ -52,17 +52,17 @@ bool ComponentFamily::matches(shared_ptr<Entity> entity)
     return true;
 }
 
-ComponentFamilyBuilder* ComponentFamily::all(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamily::all(std::initializer_list<size_t> componentIndices)
 {
     return familyBuilder->reset()->all(componentIndices);
 }
 
-ComponentFamilyBuilder* ComponentFamily::one(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamily::one(std::initializer_list<size_t> componentIndices)
 {
     return familyBuilder->reset()->one(componentIndices);
 }
 
-ComponentFamilyBuilder* ComponentFamily::exclude(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamily::exclude(std::initializer_list<size_t> componentIndices)
 {
     return familyBuilder->reset()->exclude(componentIndices);
 }
@@ -84,31 +84,31 @@ ComponentFamilyBuilder* ComponentFamilyBuilder::reset()
     return this;
 }
 
-ComponentFamilyBuilder* ComponentFamilyBuilder::all(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamilyBuilder::all(std::initializer_list<size_t> componentIndices)
 {
     for (auto index : componentIndices)
     {
-        allBits.set(static_cast<size_t>(index));
+        allBits.set(index);
     }
 
     return this;
 }
 
-ComponentFamilyBuilder* ComponentFamilyBuilder::one(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamilyBuilder::one(std::initializer_list<size_t> componentIndices)
 {
     for (auto index : componentIndices)
     {
-        oneBits.set(static_cast<size_t>(index));
+        oneBits.set(index);
     }
 
     return this;
 }
 
-ComponentFamilyBuilder* ComponentFamilyBuilder::exclude(std::initializer_list<int> componentIndices)
+ComponentFamilyBuilder* ComponentFamilyBuilder::exclude(std::initializer_list<size_t> componentIndices)
 {
     for (auto index : componentIndices)
     {
-        excludedBits.set(static_cast<size_t>(index));
+        excludedBits.set(index);
     }
 
     return this;

@@ -167,7 +167,7 @@ void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removi
     for (auto entry : componentFamilies)
     {
         ComponentFamily family =  entry.first;
-        size_t familyIndex = static_cast<size_t>(family.getIndex());
+        size_t familyIndex = family.getIndex();
 
         bool belongsToFamily = familyBits.test(familyIndex);
         bool matches = family.matches(entity) && !removing;

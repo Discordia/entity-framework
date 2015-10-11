@@ -9,10 +9,10 @@ public:
     BackgroundCollidableComponent() {}
     ~BackgroundCollidableComponent() {}
 
-    int index();
+    size_t index();
 
 public:
-    static int INDEX;
+    static size_t INDEX;
 };
 
 #endif

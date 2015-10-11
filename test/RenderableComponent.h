@@ -9,15 +9,15 @@ public:
     RenderableComponent() {}
     ~RenderableComponent() {}
 
-    int index();
+    size_t index();
 
 public:
-    static int INDEX;
+    static size_t INDEX;
 };
 
-int RenderableComponent::INDEX = 1;
+size_t RenderableComponent::INDEX = 1;
 
-int RenderableComponent::index()
+size_t RenderableComponent::index()
 {
     return INDEX;
 }
