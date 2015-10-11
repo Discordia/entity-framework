@@ -10,12 +10,12 @@ class EntityEngine;
 class EntitySystem
 {
 public:
-    EntitySystem();
-    virtual ~EntitySystem();
+    EntitySystem() {}
+    virtual ~EntitySystem() {}
 
-    virtual void addedToEngine(shared_ptr<EntityEngine> engine);
-    virtual void removedFromEngine(shared_ptr<EntityEngine> engine);
-    virtual void update(float deltaTime);
+    virtual void addedToEngine(shared_ptr<EntityEngine> engine) {}
+    virtual void removedFromEngine(shared_ptr<EntityEngine> engine) {}
+    virtual void update(float deltaTime) {}
 };
 
 #endif

@@ -13,7 +13,6 @@ set(SOURCE_FILES
         src/EntityEngine.cpp
         src/EntityEngine.h
         src/EntitySystem.h
-        src/EntitySystem.cpp
         src/Component.h
         src/Entity.cpp
         src/Entity.h
