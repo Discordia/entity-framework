@@ -25,7 +25,7 @@ public:
 
         for (auto entity : *entities)
         {
-            shared_ptr<RenderableComponent> component = std::dynamic_pointer_cast<RenderableComponent>(entity->getComponent(RenderableComponent::INDEX));
+            shared_ptr<RenderableComponent> component = entity->getComponent<RenderableComponent>();
             cout << "Render Component index: " << component->index() << ", someMember: " << component-> someMember << endl;
         }
     }

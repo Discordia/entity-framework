@@ -6,6 +6,8 @@
 class RenderableComponent : public Component
 {
 public:
+    RenderableComponent() {}
+
     RenderableComponent(int i)
         : someMember(i)
     {}
@@ -15,7 +17,7 @@ public:
     const size_t index();
 
 public:
-    const static size_t INDEX;
+    static const size_t INDEX;
 
     int someMember;
 };
