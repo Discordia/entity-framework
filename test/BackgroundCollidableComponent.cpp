@@ -1,8 +1,8 @@
 #include "BackgroundCollidableComponent.h"
 
-size_t BackgroundCollidableComponent::INDEX = 0;
+const size_t BackgroundCollidableComponent::INDEX = 0;
 
-size_t BackgroundCollidableComponent::index()
+const size_t BackgroundCollidableComponent::index()
 {
     return INDEX;
 }

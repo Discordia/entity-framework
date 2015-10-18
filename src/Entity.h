@@ -22,6 +22,7 @@ public:
 
     void addComponent(shared_ptr<Component> component);
     void removeComponent(shared_ptr<Component> component);
+    shared_ptr<Component> getComponent(size_t index);
 
     bitset<32>& getComponentBits();
     bitset<32>& getFamilyBits();

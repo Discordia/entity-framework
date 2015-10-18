@@ -6,18 +6,23 @@
 class RenderableComponent : public Component
 {
 public:
-    RenderableComponent() {}
+    RenderableComponent(int i)
+        : someMember(i)
+    {}
+
     ~RenderableComponent() {}
 
-    size_t index();
+    const size_t index();
 
 public:
-    static size_t INDEX;
+    const static size_t INDEX;
+
+    int someMember;
 };
 
-size_t RenderableComponent::INDEX = 1;
+const size_t RenderableComponent::INDEX = 1;
 
-size_t RenderableComponent::index()
+const size_t RenderableComponent::index()
 {
     return INDEX;
 }

@@ -80,3 +80,13 @@ void Entity::removeInternal(shared_ptr<Component> component)
     components[component->index()] = nullptr;
     componentBits.reset(static_cast<size_t>(component->index()));
 }
+
+shared_ptr<Component> Entity::getComponent(size_t index)
+{
+    if (index >= components.size())
+    {
+        return std::shared_ptr<Component>();
+    }
+
+    return components[index];
+}

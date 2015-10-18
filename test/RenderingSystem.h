@@ -22,6 +22,12 @@ public:
     
     void update(float deltaTime) {
         cout << "Rendering..., entities: " << entities->size() << endl;
+
+        for (auto entity : *entities)
+        {
+            shared_ptr<RenderableComponent> component = std::dynamic_pointer_cast<RenderableComponent>(entity->getComponent(RenderableComponent::INDEX));
+            cout << "Render Component index: " << component->index() << ", someMember: " << component-> someMember << endl;
+        }
     }
 
 private:
