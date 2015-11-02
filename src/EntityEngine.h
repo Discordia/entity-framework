@@ -29,6 +29,7 @@ public :
     void removeSystem(shared_ptr<EntitySystem> entitySystem);
 
     void addEntity(shared_ptr<Entity> entity);
+    void addEntities(vector_ptr<entity_ptr> entities);
     void removeEntity(shared_ptr<Entity> entity);
 
     const shared_ptr<vector<shared_ptr<Entity>>> getEntitiesFor(ComponentFamily& componentFamily);

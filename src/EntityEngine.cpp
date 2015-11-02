@@ -41,6 +41,14 @@ void EntityEngine::addEntity(shared_ptr<Entity> entity)
     entityOperations.push_back(operatorion);
 }
 
+void EntityEngine::addEntities(vector_ptr<entity_ptr> entities)
+{
+    for (auto entity : *entities)
+    {
+        addEntity(entity);
+    }
+}
+
 void EntityEngine::removeEntity(shared_ptr<Entity> entity)
 {
     shared_ptr<EntityOperation> operatorion = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::REMOVE));
