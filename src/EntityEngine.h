@@ -1,17 +1,9 @@
 #pragma once
 
-#include <memory>
-#include <vector>
-#include <unordered_map>
 #include "Entity.h"
 #include "EntityOperation.h"
 #include "ComponentOperationHandler.h"
 #include "ComponentFamily.h"
-
-using std::shared_ptr;
-using std::vector;
-using std::unordered_map;
-using std::enable_shared_from_this;
 
 class EntitySystem;
 

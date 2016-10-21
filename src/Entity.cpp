@@ -10,12 +10,12 @@ int Entity::getUUID()
     return uuid;
 }
 
-bitset<32>& Entity::getComponentBits()
+ComponentBitSet& Entity::getComponentBits()
 {
     return componentBits;
 }
 
-bitset<32>& Entity::getFamilyBits()
+ComponentBitSet& Entity::getFamilyBits()
 {
     return familyBits;
 }

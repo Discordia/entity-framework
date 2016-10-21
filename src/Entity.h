@@ -8,10 +8,6 @@
 #include "Component.h"
 #include "ComponentOperationHandler.h"
 
-using std::shared_ptr;
-using std::vector;
-using std::bitset;
-
 class Entity : public std::enable_shared_from_this<Entity>
 {
 public:
@@ -28,8 +24,8 @@ public:
     template<class T>
     shared_ptr<T> getComponent();
 
-    bitset<32>& getComponentBits();
-    bitset<32>& getFamilyBits();
+    ComponentBitSet& getComponentBits();
+    ComponentBitSet& getFamilyBits();
 
 private:
     friend class EntityEngine;
@@ -42,8 +38,8 @@ private:
     int uuid;
     vector<shared_ptr<Component>> components;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
-    bitset<32> componentBits;
-    bitset<32> familyBits;
+    ComponentBitSet componentBits;
+    ComponentBitSet familyBits;
 };
 
 template<class T>

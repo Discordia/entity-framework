@@ -1,13 +1,6 @@
 #pragma once
 
-#include <bitset>
-#include <memory>
-#include <unordered_map>
 #include "Entity.h"
-
-using std::shared_ptr;
-using std::bitset;
-using std::unordered_map;
 
 struct ComponentFamilyHasher;
 class ComponentFamilyBuilder;
@@ -15,7 +8,7 @@ class ComponentFamilyBuilder;
 class ComponentFamily
 {
 public:
-    ComponentFamily(bitset<32> allBits, bitset<32> oneBits, bitset<32> excludedBits);
+    ComponentFamily(ComponentBitSet allBits, ComponentBitSet oneBits, ComponentBitSet excludedBits);
     ~ComponentFamily();
 
     bool operator==(const ComponentFamily& other) const;
@@ -29,8 +22,8 @@ public:
     static ComponentFamilyBuilder* exclude(std::initializer_list<size_t> componentIndices);
 
 private:
-    static bool containsAll(bitset<32>& source, bitset<32>& other);
-    static bool intersects(bitset<32>& source, bitset<32>& other);
+    static bool containsAll(ComponentBitSet& source, ComponentBitSet& other);
+    static bool intersects(ComponentBitSet& source, ComponentBitSet& other);
 
 private:
     friend struct ComponentFamilyHasher;
@@ -39,9 +32,9 @@ private:
     static ComponentFamilyBuilder* familyBuilder;
 
     size_t index;
-    bitset<32> allBits;
-    bitset<32> oneBits;
-    bitset<32> excludedBits;
+    ComponentBitSet allBits;
+    ComponentBitSet oneBits;
+    ComponentBitSet excludedBits;
 };
 
 class ComponentFamilyBuilder
@@ -58,12 +51,12 @@ public:
     shared_ptr<ComponentFamily> build();
 
 private:
-    static const std::string calcFamilyHash(bitset<32>& allBits, bitset<32>& oneBits, bitset<32>& excludedBits);
+    static const std::string calcFamilyHash(ComponentBitSet& allBits, ComponentBitSet& oneBits, ComponentBitSet& excludedBits);
 
 private:
-    bitset<32> allBits;
-    bitset<32> oneBits;
-    bitset<32> excludedBits;
+    ComponentBitSet allBits;
+    ComponentBitSet oneBits;
+    ComponentBitSet excludedBits;
 
     static unordered_map<std::string, shared_ptr<ComponentFamily>> families;
 };

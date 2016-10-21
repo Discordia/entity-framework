@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstddef>
+#include "EntityConfiguration.h"
 
 typedef std::size_t TypeId;
 

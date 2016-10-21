@@ -5,7 +5,7 @@ int ComponentFamily::family_index = 0;
 ComponentFamilyBuilder *ComponentFamily::familyBuilder = new ComponentFamilyBuilder();
 unordered_map<std::string, shared_ptr<ComponentFamily>> ComponentFamilyBuilder::families;
 
-ComponentFamily::ComponentFamily(bitset<32> allBits, bitset<32> oneBits, bitset<32> excludedBits)
+ComponentFamily::ComponentFamily(ComponentBitSet allBits, ComponentBitSet oneBits, ComponentBitSet excludedBits)
     : index(family_index++), allBits(allBits), oneBits(oneBits), excludedBits(excludedBits)
 {
 }
@@ -31,7 +31,7 @@ size_t ComponentFamily::getIndex()
 
 bool ComponentFamily::matches(shared_ptr<Entity> entity)
 {
-    bitset<32> &componentBits = entity->getComponentBits();
+    ComponentBitSet &componentBits = entity->getComponentBits();
 
     if (!ComponentFamily::containsAll(componentBits, allBits))
     {
@@ -61,17 +61,17 @@ ComponentFamilyBuilder *ComponentFamily::exclude(std::initializer_list<size_t> c
     return familyBuilder->reset()->exclude(componentIndices);
 }
 
-bool ComponentFamily::containsAll(bitset<32> &source, bitset<32> &other)
+bool ComponentFamily::containsAll(ComponentBitSet &source, ComponentBitSet &other)
 {
     size_t count = other.count();
-    bitset<32> result = source & other;
+    ComponentBitSet result = source & other;
 
     return result.count() == count;
 }
 
-bool ComponentFamily::intersects(bitset<32> &source, bitset<32> &other)
+bool ComponentFamily::intersects(ComponentBitSet &source, ComponentBitSet &other)
 {
-    bitset<32> result = source & other;
+    ComponentBitSet result = source & other;
     return result.any();
 }
 
@@ -85,9 +85,9 @@ ComponentFamilyBuilder::~ComponentFamilyBuilder()
 
 ComponentFamilyBuilder *ComponentFamilyBuilder::reset()
 {
-    allBits = bitset<32>();
-    oneBits = bitset<32>();
-    excludedBits = bitset<32>();
+    allBits = ComponentBitSet();
+    oneBits = ComponentBitSet();
+    excludedBits = ComponentBitSet();
 
     return this;
 }
@@ -138,7 +138,7 @@ shared_ptr<ComponentFamily> ComponentFamilyBuilder::build()
 }
 
 const std::string
-ComponentFamilyBuilder::calcFamilyHash(bitset<32> &allBits, bitset<32> &oneBits, bitset<32> &excludedBits)
+ComponentFamilyBuilder::calcFamilyHash(ComponentBitSet &allBits, ComponentBitSet &oneBits, ComponentBitSet &excludedBits)
 {
     std::string familyHash;
     if (allBits.any())

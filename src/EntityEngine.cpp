@@ -167,7 +167,7 @@ void EntityEngine::processPendingEntityOperations()
 
 void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removing)
 {
-    bitset<32>& familyBits = entity->getFamilyBits();
+    ComponentBitSet& familyBits = entity->getFamilyBits();
     
     for (auto entry : componentFamilies)
     {
