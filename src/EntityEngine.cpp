@@ -1,8 +1,5 @@
 #include "EntityEngine.h"
 #include "EntitySystem.h"
-#include "EntityOperation.h"
-
-#include <algorithm>
 
 int EntityEngine::entityUUIDs = 0;
 
@@ -51,7 +48,7 @@ void EntityEngine::removeEntity(shared_ptr<Entity> entity)
     entityOperations.push_back(operatorion);
 }
 
-const shared_ptr<vector<shared_ptr<Entity>>> EntityEngine::getEntitiesFor(ComponentFamily& componentFamily)
+const vector_ptr<entity_ptr> EntityEngine::getEntitiesFor(ComponentFamily& componentFamily)
 {
     auto keyValueIt = componentFamilies.find(componentFamily);
 
