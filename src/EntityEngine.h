@@ -1,5 +1,4 @@
-#ifndef ENTITY_FRAMEWORK_ENTITYENGINE_H
-#define ENTITY_FRAMEWORK_ENTITYENGINE_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -23,7 +22,6 @@ class EntityEngine : public enable_shared_from_this<EntityEngine>
 {
 public :
     EntityEngine();
-    ~EntityEngine();
 
     void addSystem(shared_ptr<EntitySystem> entitySystem);
     void removeSystem(shared_ptr<EntitySystem> entitySystem);
@@ -38,8 +36,8 @@ public :
     void refresh();
 
 private:
-    friend void ComponentOperationHandler::add(shared_ptr<Entity>, shared_ptr<Component>);
-    friend void ComponentOperationHandler::remove(shared_ptr<Entity>, shared_ptr<Component>);
+    friend void ComponentOperationHandler::add(shared_ptr<Entity>, shared_ptr<Component>, TypeId i);
+    friend void ComponentOperationHandler::remove(shared_ptr<Entity>, shared_ptr<Component>, TypeId i);
 
     void addComponentOperation(shared_ptr<ComponentOperation> componentOperation);
 
@@ -61,6 +59,3 @@ private:
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
     unordered_map<ComponentFamily, vector_ptr<entity_ptr>, ComponentFamilyHasher> componentFamilies;
 };
-
-
-#endif

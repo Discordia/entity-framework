@@ -12,10 +12,6 @@ EntityEngine::EntityEngine()
     componentOperationHandler = shared_ptr<ComponentOperationHandler>(new ComponentOperationHandler(this));
 }
 
-EntityEngine::~EntityEngine()
-{
-}
-
 void EntityEngine::addSystem(shared_ptr<EntitySystem> entitySystem)
 {
     entitySystem->addedToEngine(shared_from_this());
@@ -37,8 +33,8 @@ void EntityEngine::addEntity(shared_ptr<Entity> entity)
 
     entity->setUUID(entityUUIDs++);
 
-    shared_ptr<EntityOperation> operatorion = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
-    entityOperations.push_back(operatorion);
+    shared_ptr<EntityOperation> operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
+    entityOperations.push_back(operation);
 }
 
 void EntityEngine::addEntities(vector_ptr<entity_ptr> entities)
@@ -127,15 +123,16 @@ void EntityEngine::processPendingComponentOperations()
     {
         auto entity = componentOperation->entity;
         auto component = componentOperation->component;
-        
+        auto componentId = componentOperation->componentId;
+
         switch (componentOperation->type) 
         {
             case ComponentOperation::ADD:
-                entity->addInternal(component);    
+                entity->addInternal(component, componentId);
                 break;
             
             case ComponentOperation::REMOVE:
-                entity->removeInternal(component);
+                entity->removeInternal(componentId);
                 break;
         }
 

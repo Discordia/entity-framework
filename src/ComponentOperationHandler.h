@@ -1,6 +1,10 @@
-#ifndef ENTITY_FRAMEWORK_COMPONENTOPERATIONHANDLER_H
-#define ENTITY_FRAMEWORK_COMPONENTOPERATIONHANDLER_H
+#pragma once
 
+#include <memory>
+
+using std::shared_ptr;
+
+class Entity;
 class EntityEngine;
 
 class ComponentOperation
@@ -12,15 +16,16 @@ public:
         REMOVE
     };
 
-    ComponentOperation(shared_ptr<Entity> entity, shared_ptr<Component> component, ComponentOperationType type);
+    ComponentOperation(ComponentOperationType type, shared_ptr<Entity> entity, shared_ptr<Component> component, TypeId componentId);
 
-    static shared_ptr<ComponentOperation> createAdd(shared_ptr<Entity> entity, shared_ptr<Component> component);
-    static shared_ptr<ComponentOperation> createRemove(shared_ptr<Entity> entity, shared_ptr<Component> component);
+    static shared_ptr<ComponentOperation> createAdd(shared_ptr<Entity> entity, shared_ptr<Component> component, TypeId componentId);
+    static shared_ptr<ComponentOperation> createRemove(shared_ptr<Entity> entity, shared_ptr<Component> component, TypeId componentId);
 
 public:
+    ComponentOperationType type;
     shared_ptr<Entity> entity;
     shared_ptr<Component> component;
-    ComponentOperationType type;
+    TypeId componentId;
 };
 
 class ComponentOperationHandler
@@ -28,12 +33,9 @@ class ComponentOperationHandler
 public:
     ComponentOperationHandler(EntityEngine* engine);
 
-    void add(shared_ptr<Entity> entity, shared_ptr<Component> component);
-    void remove(shared_ptr<Entity> entity, shared_ptr<Component> component);
+    void add(shared_ptr<Entity> entity, shared_ptr<Component> component, TypeId componentId);
+    void remove(shared_ptr<Entity> entity, shared_ptr<Component> component, TypeId componentId);
 
 private:
     EntityEngine* engine;
 };
-
-
-#endif

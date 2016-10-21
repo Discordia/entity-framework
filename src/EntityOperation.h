@@ -1,5 +1,4 @@
-#ifndef ENTITY_FRAMEWORK_ENTITYOPERATION_H
-#define ENTITY_FRAMEWORK_ENTITYOPERATION_H
+#pragma once
 
 #include "Entity.h"
 
@@ -20,5 +19,3 @@ public:
     shared_ptr<Entity> entity;
     EntityOperationType type;
 };
-
-#endif

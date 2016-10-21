@@ -14,12 +14,12 @@ int main()
     engine->addSystem(shared_ptr<EntitySystem>(new RenderingSystem()));
 
     shared_ptr<Entity> entity1 = shared_ptr<Entity>(new Entity());
-    entity1->addComponent(shared_ptr<Component>(new BackgroundCollidableComponent()));
-    entity1->addComponent(shared_ptr<Component>(new RenderableComponent(1)));
+    entity1->addComponent(shared_ptr<BackgroundCollidableComponent>(new BackgroundCollidableComponent()));
+    entity1->addComponent(shared_ptr<RenderableComponent>(new RenderableComponent(1)));
     engine->addEntity(entity1);
 
     shared_ptr<Entity> entity2 = shared_ptr<Entity>(new Entity());
-    entity2->addComponent(shared_ptr<Component>(new RenderableComponent(2)));
+    entity2->addComponent(shared_ptr<RenderableComponent>(new RenderableComponent(2)));
     engine->addEntity(entity2);
 
     for (int i = 0; i < 10; i++) {

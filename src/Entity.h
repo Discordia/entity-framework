@@ -1,33 +1,32 @@
-#ifndef ENTITY_FRAMEWORK_ENTITY_H
-#define ENTITY_FRAMEWORK_ENTITY_H
+#pragma once
 
 #include <memory>
 #include <vector>
 #include <bitset>
+#include <type_traits>
+#include <utility>
 #include "Component.h"
+#include "ComponentOperationHandler.h"
 
 using std::shared_ptr;
 using std::vector;
 using std::bitset;
 
-class ComponentOperationHandler;
-
-template<class T, class B> struct derived_from {
-    static void constraints(T* p) { B* pb = p; }
-    derived_from() { void(*p)(T*) = constraints; }
-};
-
 class Entity : public std::enable_shared_from_this<Entity>
 {
 public:
     Entity();
-    ~Entity();
 
     int getUUID();
 
-    void addComponent(shared_ptr<Component> component);
-    void removeComponent(shared_ptr<Component> component);
-    template<class T> shared_ptr<T> getComponent();
+    template<class T>
+    void addComponent(shared_ptr<T> component);
+
+    template<class T>
+    void removeComponent(shared_ptr<T> component);
+
+    template<class T>
+    shared_ptr<T> getComponent();
 
     bitset<32>& getComponentBits();
     bitset<32>& getFamilyBits();
@@ -36,8 +35,8 @@ private:
     friend class EntityEngine;
 
     void setUUID(int uuid);
-    void addInternal(shared_ptr<Component> component);
-    void removeInternal(shared_ptr<Component> component);
+    void addInternal(shared_ptr<Component> component, TypeId componentId);
+    void removeInternal(TypeId componentId);
 
 private:
     int uuid;
@@ -48,17 +47,46 @@ private:
 };
 
 template<class T>
+void Entity::addComponent(shared_ptr<T> component)
+{
+    static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Comnponent");
+
+    if (componentOperationHandler != nullptr)
+    {
+        componentOperationHandler->add(shared_from_this(), component, getComponentTypeId<T>());
+    }
+    else
+    {
+        addInternal(component, getComponentTypeId<T>());
+    }
+}
+
+template<class T>
+void Entity::removeComponent(shared_ptr<T> component)
+{
+    static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Comnponent");
+
+    if (componentOperationHandler != nullptr)
+    {
+        componentOperationHandler->remove(shared_from_this(), component, getComponentTypeId<T>());
+    }
+    else
+    {
+        removeInternal(getComponentTypeId<T>());
+    }
+}
+
+template<class T>
 shared_ptr<T> Entity::getComponent()
 {
     // check that template parameter is derived from class Component
-    derived_from<T,Component>();
+    static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Comnponent");
 
-    if (T::INDEX >= components.size())
+    TypeId componentId = getComponentTypeId<T>();
+    if (componentId >= components.size())
     {
         return std::shared_ptr<T>();
     }
 
-    return std::dynamic_pointer_cast<T>(components[T::INDEX]);
+    return std::dynamic_pointer_cast<T>(components[componentId]);
 }
-
-#endif

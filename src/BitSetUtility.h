@@ -1,5 +1,4 @@
-#ifndef ENTITY_FRAMEWORK_BITSETUTILITY_H
-#define ENTITY_FRAMEWORK_BITSETUTILITY_H
+#pragma once
 
 #include <bitset>
 
@@ -25,7 +24,4 @@ public:
         return result.any();
     }
 };
-
-
-#endif
 

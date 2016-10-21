@@ -1,5 +1,4 @@
-#ifndef ENTITY_FRAMEWORK_BACKGROUNDCOLLISIONSYSTEM_H
-#define ENTITY_FRAMEWORK_BACKGROUNDCOLLISIONSYSTEM_H
+#pragma once
 
 #include <iostream>
 #include "../src/EntitySystem.h"
@@ -15,7 +14,7 @@ class BackgroundCollisionSystem : public EntitySystem
 public:
     virtual void addedToEngine(shared_ptr<EntityEngine> engine)
     {
-        shared_ptr<ComponentFamily> componentFamily = ComponentFamily::one({BackgroundCollidableComponent::INDEX})->build();
+        shared_ptr<ComponentFamily> componentFamily = ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()})->build();
         this->entities = engine->getEntitiesFor(*componentFamily);
     }
 
@@ -26,5 +25,3 @@ public:
 private:
     shared_ptr<vector<shared_ptr<Entity>>> entities;
 };
-
-#endif

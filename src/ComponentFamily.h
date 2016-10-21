@@ -1,6 +1,4 @@
-#ifndef ENTITY_FRAMEWORK_COMPONENTFAMILY_H
-#define ENTITY_FRAMEWORK_COMPONENTFAMILY_H
-
+#pragma once
 
 #include <bitset>
 #include <memory>
@@ -82,5 +80,3 @@ struct ComponentFamilyHasher
         return seed;
     }
 };
-
-#endif
