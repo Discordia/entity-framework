@@ -44,8 +44,8 @@ void EntityEngine::addEntities(vector_ptr<entity_ptr> entities)
 
 void EntityEngine::removeEntity(shared_ptr<Entity> entity)
 {
-    shared_ptr<EntityOperation> operatorion = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::REMOVE));
-    entityOperations.push_back(operatorion);
+    shared_ptr<EntityOperation> operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::REMOVE));
+    entityOperations.push_back(operation);
 }
 
 const vector_ptr<entity_ptr> EntityEngine::getEntitiesFor(ComponentFamily& componentFamily)

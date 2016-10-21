@@ -27,27 +27,12 @@ void Entity::setUUID(int uuid)
 
 void Entity::addInternal(shared_ptr<Component> component, TypeId componentId)
 {
-    if (componentId >= components.size())
-    {
-        components.resize(static_cast<size_t>(componentId + 1), nullptr);
-    }
-
-    if (components[componentId] != nullptr)
-    {
-        removeInternal(componentId);
-    }
-
     components[componentId] = component;
     componentBits.set(componentId);
 }
 
 void Entity::removeInternal(TypeId componentId)
 {
-    if (components[componentId] == nullptr)
-    {
-        return;
-    }
-
     components[componentId] = nullptr;
     componentBits.reset(componentId);
 }

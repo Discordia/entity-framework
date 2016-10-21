@@ -36,7 +36,7 @@ private:
 
 private:
     int uuid;
-    vector<shared_ptr<Component>> components;
+    array<shared_ptr<Component>, MAX_COMPONENTS> components;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
     ComponentBitSet componentBits;
     ComponentBitSet familyBits;
@@ -45,7 +45,7 @@ private:
 template<class T>
 void Entity::addComponent(shared_ptr<T> component)
 {
-    static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Comnponent");
+    static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Component");
 
     if (componentOperationHandler != nullptr)
     {

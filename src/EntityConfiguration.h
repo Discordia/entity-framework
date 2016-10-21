@@ -6,9 +6,11 @@
 #include <bitset>
 #include <memory>
 #include <unordered_map>
+#include <array>
 
 using std::shared_ptr;
 using std::vector;
+using std::array;
 using std::bitset;
 using std::unordered_map;
 using std::enable_shared_from_this;
