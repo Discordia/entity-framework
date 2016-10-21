@@ -29,6 +29,10 @@ public:
     static ComponentFamilyBuilder* exclude(std::initializer_list<size_t> componentIndices);
 
 private:
+    static bool containsAll(bitset<32>& source, bitset<32>& other);
+    static bool intersects(bitset<32>& source, bitset<32>& other);
+
+private:
     friend struct ComponentFamilyHasher;
 
     static int family_index;
