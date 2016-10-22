@@ -18,6 +18,7 @@ public :
     void addSystem(shared_ptr<EntitySystem> entitySystem);
     void removeSystem(shared_ptr<EntitySystem> entitySystem);
 
+    shared_ptr<Entity> createEntity();
     void addEntity(shared_ptr<Entity> entity);
     void addEntities(vector_ptr<entity_ptr> entities);
     void removeEntity(shared_ptr<Entity> entity);
@@ -36,6 +37,7 @@ private:
 private:
     void addEntityInternal(shared_ptr<Entity> entity);
     void removeEntityInternal(shared_ptr<Entity> entity);
+    int32_t nextEntityUUID();
 
     void processPendingComponentOperations();
     void processPendingEntityOperations();
@@ -43,7 +45,7 @@ private:
 
 private:
     bool updating;
-    static int entityUUIDs;
+    static int32_t entityUUIDs;
     vector<shared_ptr<Entity>> entities;
     vector<shared_ptr<EntitySystem>> systems;
     vector<shared_ptr<EntityOperation>> entityOperations;

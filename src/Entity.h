@@ -12,8 +12,9 @@ class Entity : public std::enable_shared_from_this<Entity>
 {
 public:
     Entity();
+    Entity(int32_t uuid, shared_ptr<ComponentOperationHandler> componentOperationHandler);
 
-    int getUUID();
+    int32_t getUUID();
 
     template<class T>
     void addComponent(shared_ptr<T> component);
@@ -30,12 +31,14 @@ public:
 private:
     friend class EntityEngine;
 
-    void setUUID(int uuid);
+    void setUUID(int32_t uuid);
+    void resetUUID();
+
     void addInternal(shared_ptr<Component> component, TypeId componentId);
     void removeInternal(TypeId componentId);
 
 private:
-    int uuid;
+    int32_t uuid;
     array<shared_ptr<Component>, MAX_COMPONENTS> components;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
     ComponentBitSet componentBits;
@@ -60,7 +63,7 @@ void Entity::addComponent(shared_ptr<T> component)
 template<class T>
 void Entity::removeComponent(shared_ptr<T> component)
 {
-    static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Comnponent");
+    static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Component");
 
     if (componentOperationHandler != nullptr)
     {

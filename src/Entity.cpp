@@ -1,11 +1,16 @@
 #include "Entity.h"
 
 Entity::Entity()
-    : uuid(0)
+{
+    resetUUID();
+}
+
+Entity::Entity(int32_t uuid, shared_ptr<ComponentOperationHandler> componentOperationHandler)
+    : uuid(uuid), componentOperationHandler(componentOperationHandler)
 {
 }
 
-int Entity::getUUID()
+int32_t Entity::getUUID()
 {
     return uuid;
 }
@@ -20,9 +25,14 @@ ComponentBitSet& Entity::getFamilyBits()
     return familyBits;
 }
 
-void Entity::setUUID(int uuid)
+void Entity::setUUID(int32_t uuid)
 {
     this->uuid = uuid;
+}
+
+void Entity::resetUUID()
+{
+    this->uuid = -1;
 }
 
 void Entity::addInternal(shared_ptr<Component> component, TypeId componentId)

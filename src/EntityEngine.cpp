@@ -1,7 +1,7 @@
 #include "EntityEngine.h"
 #include "EntitySystem.h"
 
-int EntityEngine::entityUUIDs = 0;
+int32_t EntityEngine::entityUUIDs = 0;
 
 EntityEngine::EntityEngine()
         : updating(false)
@@ -21,14 +21,24 @@ void EntityEngine::removeSystem(shared_ptr<EntitySystem> entitySystem)
     entitySystem->onRemovedFromEngine(*this);
 }
 
+shared_ptr<Entity> EntityEngine::createEntity()
+{
+    shared_ptr<Entity> entity(new Entity(nextEntityUUID(), componentOperationHandler));
+
+    shared_ptr<EntityOperation> operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
+    entityOperations.push_back(operation);
+
+    return entity;
+}
+
 void EntityEngine::addEntity(shared_ptr<Entity> entity)
 {
-    if (entity->getUUID() != 0)
+    if (entity->getUUID() != -1)
     {
         return;
     }
 
-    entity->setUUID(entityUUIDs++);
+    entity->setUUID(nextEntityUUID());
 
     shared_ptr<EntityOperation> operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
     entityOperations.push_back(operation);
@@ -94,8 +104,8 @@ bool EntityEngine::update(float deltaTime)
 
 void EntityEngine::refresh()
 {
-    processPendingComponentOperations();
     processPendingEntityOperations();
+    processPendingComponentOperations();
 }
 
 void EntityEngine::addComponentOperation(shared_ptr<ComponentOperation> componentOperation)
@@ -112,6 +122,12 @@ void EntityEngine::addEntityInternal(shared_ptr<Entity> entity)
 void EntityEngine::removeEntityInternal(shared_ptr<Entity> entity)
 {
     entities.erase(std::remove(entities.begin(), entities.end(), entity), entities.end());
+    entity->resetUUID();
+}
+
+int32_t EntityEngine::nextEntityUUID()
+{
+    return ++entityUUIDs;
 }
 
 void EntityEngine::processPendingComponentOperations()
@@ -122,12 +138,12 @@ void EntityEngine::processPendingComponentOperations()
         auto component = componentOperation->component;
         auto componentId = componentOperation->componentId;
 
-        switch (componentOperation->type) 
+        switch (componentOperation->type)
         {
             case ComponentOperation::ADD:
                 entity->addInternal(component, componentId);
                 break;
-            
+
             case ComponentOperation::REMOVE:
                 entity->removeInternal(componentId);
                 break;
