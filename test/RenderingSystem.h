@@ -10,16 +10,24 @@ using std::endl;
 
 class RenderingSystem : public EntitySystem
 {
-
-
 public:
-    void onAddedToEngine(shared_ptr<EntityEngine> engine)
+    RenderingSystem()
     {
-        shared_ptr<ComponentFamily> componentFamily = ComponentFamily::one({getComponentTypeId<RenderableComponent>()})->build();
-        this->entities = engine->getEntitiesFor(*componentFamily);
+        this->componentFamily = ComponentFamily::one({getComponentTypeId<RenderableComponent>()})->build();
     }
-    
-    void update(float deltaTime) {
+
+    shared_ptr<ComponentFamily> getComponentFamily() override
+    {
+        return componentFamily;
+    }
+
+    void onAddedToEngine(EntityEngine &engine) override
+    {
+        cout << "RenderingSystem: I have " << engine.getEntitiesFor(*componentFamily)->size() << " entities when added" << endl;
+    }
+
+    void update(vector_ptr<entity_ptr> entities, float deltaTime) override
+    {
         cout << "Rendering..., entities: " << entities->size() << endl;
 
         for (auto entity : *entities)
@@ -30,5 +38,5 @@ public:
     }
 
 private:
-    shared_ptr<vector<shared_ptr<Entity>>> entities;
+    shared_ptr<ComponentFamily> componentFamily;
 };

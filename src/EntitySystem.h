@@ -9,7 +9,9 @@ class EntitySystem
 public:
     virtual ~EntitySystem() {}
 
-    virtual void onAddedToEngine(shared_ptr<EntityEngine> engine) {}
-    virtual void onRemovedFromEngine(shared_ptr<EntityEngine> engine) {}
-    virtual void update(float deltaTime) {}
+    virtual shared_ptr<ComponentFamily> getComponentFamily() = 0;
+
+    virtual void onAddedToEngine(EntityEngine& engine) {}
+    virtual void onRemovedFromEngine(EntityEngine& engine) {}
+    virtual void update(vector_ptr<entity_ptr> entities, float deltaTime) {}
 };

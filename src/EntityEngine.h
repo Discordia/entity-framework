@@ -10,7 +10,7 @@ class EntitySystem;
 template<class T> using  vector_ptr = shared_ptr<vector<T>> ;
 typedef shared_ptr<Entity> entity_ptr;
 
-class EntityEngine : public enable_shared_from_this<EntityEngine>
+class EntityEngine
 {
 public :
     EntityEngine();

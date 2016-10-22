@@ -12,16 +12,26 @@ using std::endl;
 class BackgroundCollisionSystem : public EntitySystem
 {
 public:
-    virtual void onAddedToEngine(shared_ptr<EntityEngine> engine)
+    BackgroundCollisionSystem()
     {
-        shared_ptr<ComponentFamily> componentFamily = ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()})->build();
-        this->entities = engine->getEntitiesFor(*componentFamily);
+        this->componentFamily = ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()})->build();
     }
 
-    void update(float deltaTime) {
-        cout << "Colliding..., entities: " << entities->size() << endl;
+    shared_ptr<ComponentFamily> getComponentFamily() override
+    {
+        return componentFamily;
+    }
+
+    void onAddedToEngine(EntityEngine &engine) override
+    {
+        cout << "BackgroundCollisionSystem: I have " << engine.getEntitiesFor(*componentFamily)->size() << " entities when added" << endl;
+    }
+
+    void update(vector_ptr<entity_ptr> entities, float deltaTime) override
+    {
+        cout << "BackgroundCollisionSystem: Colliding..., entities: " << entities->size() << endl;
     }
 
 private:
-    shared_ptr<vector<shared_ptr<Entity>>> entities;
+    shared_ptr<ComponentFamily> componentFamily;
 };

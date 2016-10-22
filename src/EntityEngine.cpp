@@ -11,14 +11,14 @@ EntityEngine::EntityEngine()
 
 void EntityEngine::addSystem(shared_ptr<EntitySystem> entitySystem)
 {
-    entitySystem->onAddedToEngine(shared_from_this());
+    entitySystem->onAddedToEngine(*this);
     systems.push_back(entitySystem);
 }
 
 void EntityEngine::removeSystem(shared_ptr<EntitySystem> entitySystem)
 {
     systems.erase(std::remove(systems.begin(), systems.end(), entitySystem), systems.end());
-    entitySystem->onRemovedFromEngine(shared_from_this());
+    entitySystem->onRemovedFromEngine(*this);
 }
 
 void EntityEngine::addEntity(shared_ptr<Entity> entity)
@@ -82,7 +82,9 @@ bool EntityEngine::update(float deltaTime)
     updating = true;
     for (auto system : systems)
     {
-        system->update(deltaTime);
+        auto componentFamily = system->getComponentFamily();
+        auto entities = getEntitiesFor(*componentFamily);
+        system->update(entities, deltaTime);
     }
 
     updating = false;
