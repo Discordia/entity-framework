@@ -83,8 +83,6 @@ bool EntityEngine::update(float deltaTime)
     for (auto system : systems)
     {
         system->update(deltaTime);
-
-        refresh();
     }
 
     updating = false;
