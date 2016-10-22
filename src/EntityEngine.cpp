@@ -11,14 +11,14 @@ EntityEngine::EntityEngine()
 
 void EntityEngine::addSystem(shared_ptr<EntitySystem> entitySystem)
 {
-    entitySystem->addedToEngine(shared_from_this());
+    entitySystem->onAddedToEngine(shared_from_this());
     systems.push_back(entitySystem);
 }
 
 void EntityEngine::removeSystem(shared_ptr<EntitySystem> entitySystem)
 {
     systems.erase(std::remove(systems.begin(), systems.end(), entitySystem), systems.end());
-    entitySystem->removedFromEngine(shared_from_this());
+    entitySystem->onRemovedFromEngine(shared_from_this());
 }
 
 void EntityEngine::addEntity(shared_ptr<Entity> entity)

@@ -12,7 +12,7 @@ using std::endl;
 class BackgroundCollisionSystem : public EntitySystem
 {
 public:
-    virtual void addedToEngine(shared_ptr<EntityEngine> engine)
+    virtual void onAddedToEngine(shared_ptr<EntityEngine> engine)
     {
         shared_ptr<ComponentFamily> componentFamily = ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()})->build();
         this->entities = engine->getEntitiesFor(*componentFamily);

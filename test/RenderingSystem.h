@@ -13,7 +13,7 @@ class RenderingSystem : public EntitySystem
 
 
 public:
-    void addedToEngine(shared_ptr<EntityEngine> engine)
+    void onAddedToEngine(shared_ptr<EntityEngine> engine)
     {
         shared_ptr<ComponentFamily> componentFamily = ComponentFamily::one({getComponentTypeId<RenderableComponent>()})->build();
         this->entities = engine->getEntitiesFor(*componentFamily);
