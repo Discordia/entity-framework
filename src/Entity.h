@@ -1,10 +1,5 @@
 #pragma once
 
-#include <memory>
-#include <vector>
-#include <bitset>
-#include <type_traits>
-#include <utility>
 #include "Component.h"
 #include "ComponentOperationHandler.h"
 

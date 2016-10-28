@@ -16,9 +16,9 @@ public:
         this->componentFamily = ComponentFamily::one({getComponentTypeId<RenderableComponent>()});
     }
 
-    shared_ptr<ComponentFamily> getComponentFamily() override
+    ComponentFamily& getComponentFamily() override
     {
-        return componentFamily;
+        return *componentFamily;
     }
 
     void onAddedToEngine(EntityEngine &engine) override

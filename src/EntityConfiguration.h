@@ -7,7 +7,9 @@
 #include <memory>
 #include <unordered_map>
 #include <array>
+#include <vector>
 
+using std::unique_ptr;
 using std::shared_ptr;
 using std::vector;
 using std::array;

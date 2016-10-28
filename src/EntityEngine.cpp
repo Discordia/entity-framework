@@ -93,7 +93,7 @@ bool EntityEngine::update(float deltaTime)
     for (auto system : systems)
     {
         auto componentFamily = system->getComponentFamily();
-        auto entities = getEntitiesFor(*componentFamily);
+        auto entities = getEntitiesFor(componentFamily);
         system->update(entities, deltaTime);
     }
 
