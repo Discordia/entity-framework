@@ -29,11 +29,11 @@ public:
 class ComponentOperationHandler
 {
 public:
-    ComponentOperationHandler(EntityEngine* engine);
+    ComponentOperationHandler(EntityEngine& engine);
 
     void add(shared_ptr<Entity> entity, shared_ptr<Component> component, TypeId componentId);
     void remove(shared_ptr<Entity> entity, shared_ptr<Component> component, TypeId componentId);
 
 private:
-    EntityEngine* engine;
+    EntityEngine& engine;
 };

@@ -6,7 +6,7 @@ int32_t EntityEngine::entityUUIDs = 0;
 EntityEngine::EntityEngine()
         : updating(false)
 {
-    componentOperationHandler = shared_ptr<ComponentOperationHandler>(new ComponentOperationHandler(this));
+    componentOperationHandler = shared_ptr<ComponentOperationHandler>(new ComponentOperationHandler(*this));
 }
 
 void EntityEngine::addSystem(shared_ptr<EntitySystem> entitySystem)

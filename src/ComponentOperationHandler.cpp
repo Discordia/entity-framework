@@ -15,17 +15,17 @@ shared_ptr<ComponentOperation> ComponentOperation::createRemove(shared_ptr<Entit
     return shared_ptr<ComponentOperation>(new ComponentOperation(ComponentOperationType::REMOVE, entity, component, componentId));
 }
 
-ComponentOperationHandler::ComponentOperationHandler(EntityEngine* engine)
+ComponentOperationHandler::ComponentOperationHandler(EntityEngine& engine)
         : engine(engine)
 {
 }
 
 void ComponentOperationHandler::add(shared_ptr<Entity> entity, shared_ptr<Component> component, TypeId componentId)
 {
-    engine->addComponentOperation(ComponentOperation::createAdd(entity, component, componentId));
+    engine.addComponentOperation(ComponentOperation::createAdd(entity, component, componentId));
 }
 
 void ComponentOperationHandler::remove(shared_ptr<Entity> entity, shared_ptr<Component> component, TypeId componentId)
 {
-    engine->addComponentOperation(ComponentOperation::createRemove(entity, component, componentId));
+    engine.addComponentOperation(ComponentOperation::createRemove(entity, component, componentId));
 }
