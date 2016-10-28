@@ -14,7 +14,7 @@ class BackgroundCollisionSystem : public EntitySystem
 public:
     BackgroundCollisionSystem()
     {
-        this->componentFamily = ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()})->build();
+        this->componentFamily = ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()}).build();
     }
 
     shared_ptr<ComponentFamily> getComponentFamily() override

@@ -17,9 +17,9 @@ public:
     size_t getIndex();
     bool matches(shared_ptr<Entity> entity);
 
-    static ComponentFamilyBuilder* all(std::initializer_list<size_t> componentIndices);
-    static ComponentFamilyBuilder* one(std::initializer_list<size_t> componentIndices);
-    static ComponentFamilyBuilder* exclude(std::initializer_list<size_t> componentIndices);
+    static ComponentFamilyBuilder& all(std::initializer_list<size_t> componentIndices);
+    static ComponentFamilyBuilder& one(std::initializer_list<size_t> componentIndices);
+    static ComponentFamilyBuilder& exclude(std::initializer_list<size_t> componentIndices);
 
 private:
     static bool containsAll(ComponentBitSet& source, ComponentBitSet& other);
@@ -28,8 +28,8 @@ private:
 private:
     friend struct ComponentFamilyHasher;
 
-    static int family_index;
-    static ComponentFamilyBuilder* familyBuilder;
+    static size_t family_index;
+    static ComponentFamilyBuilder familyBuilder;
 
     size_t index;
     ComponentBitSet allBits;
@@ -43,10 +43,10 @@ public:
     ComponentFamilyBuilder();
     ~ComponentFamilyBuilder();
 
-    ComponentFamilyBuilder* reset();
-    ComponentFamilyBuilder* all(std::initializer_list<size_t> componentIndices);
-    ComponentFamilyBuilder* one(std::initializer_list<size_t> componentIndices);
-    ComponentFamilyBuilder* exclude(std::initializer_list<size_t> componentIndices);
+    ComponentFamilyBuilder& reset();
+    ComponentFamilyBuilder& all(std::initializer_list<size_t> componentIndices);
+    ComponentFamilyBuilder& one(std::initializer_list<size_t> componentIndices);
+    ComponentFamilyBuilder& exclude(std::initializer_list<size_t> componentIndices);
 
     shared_ptr<ComponentFamily> build();
 
