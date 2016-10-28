@@ -122,7 +122,7 @@ ComponentFamilyBuilder& ComponentFamilyBuilder::exclude(std::initializer_list<si
     return *this;
 }
 
-shared_ptr<ComponentFamily> ComponentFamilyBuilder::build()
+ComponentFamilyBuilder::operator shared_ptr<ComponentFamily>()
 {
     const std::string familyHash = calcFamilyHash(allBits, oneBits, excludedBits);
     auto familyIt = ComponentFamilyBuilder::families.find(familyHash);

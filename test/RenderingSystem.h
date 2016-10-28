@@ -13,7 +13,7 @@ class RenderingSystem : public EntitySystem
 public:
     RenderingSystem()
     {
-        this->componentFamily = ComponentFamily::one({getComponentTypeId<RenderableComponent>()}).build();
+        this->componentFamily = ComponentFamily::one({getComponentTypeId<RenderableComponent>()});
     }
 
     shared_ptr<ComponentFamily> getComponentFamily() override
