@@ -44,9 +44,9 @@ void EntityEngine::addEntity(shared_ptr<Entity> entity)
     entityOperations.push_back(operation);
 }
 
-void EntityEngine::addEntities(vector_ptr<entity_ptr> entities)
+void EntityEngine::addEntities(vector<entity_ptr>& entities)
 {
-    for (auto entity : *entities)
+    for (auto entity : entities)
     {
         addEntity(entity);
     }
@@ -104,8 +104,8 @@ bool EntityEngine::update(float deltaTime)
 
 void EntityEngine::refresh()
 {
-    processPendingEntityOperations();
     processPendingComponentOperations();
+    processPendingEntityOperations();
 }
 
 void EntityEngine::addComponentOperation(shared_ptr<ComponentOperation> componentOperation)

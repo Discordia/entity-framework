@@ -13,5 +13,7 @@ public:
 
     virtual void onAddedToEngine(EntityEngine& engine) {}
     virtual void onRemovedFromEngine(EntityEngine& engine) {}
+    virtual void onEntityAdded(shared_ptr<Entity> entity) {}
+    virtual void onEntityRemoved(shared_ptr<Entity> entity) {}
     virtual void update(vector_ptr<entity_ptr> entities, float deltaTime) {}
 };

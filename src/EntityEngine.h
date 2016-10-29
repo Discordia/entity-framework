@@ -20,7 +20,7 @@ public :
 
     shared_ptr<Entity> createEntity();
     void addEntity(shared_ptr<Entity> entity);
-    void addEntities(vector_ptr<entity_ptr> entities);
+    void addEntities(vector<entity_ptr>& entities);
     void removeEntity(shared_ptr<Entity> entity);
 
     const vector_ptr<entity_ptr> getEntitiesFor(ComponentFamily& componentFamily);
