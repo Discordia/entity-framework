@@ -79,7 +79,7 @@ shared_ptr<T> Entity::getComponent()
     TypeId componentId = getComponentTypeId<T>();
     if (componentId >= components.size())
     {
-        return std::shared_ptr<T>();
+        return shared_ptr<T>();
     }
 
     return std::dynamic_pointer_cast<T>(components[componentId]);

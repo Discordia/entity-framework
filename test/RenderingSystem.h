@@ -17,9 +17,9 @@ public:
         return *componentFamily;
     }
 
-    void onAddedToEngine(EntityEngine &engine, vector_ptr<entity_ptr> entities) override
+    void onAddedToEngine(EntityEngine &engine) override
     {
-        cout << "RenderingSystem: I have " << entities->size() << " entities when added" << endl;
+        cout << "RenderingSystem: I have been added to the engine" << endl;
     }
 
     void onRemovedFromEngine(EntityEngine &engine) override

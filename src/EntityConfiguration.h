@@ -22,6 +22,8 @@ using std::pair;
 using std::make_pair;
 using std::cout;
 using std::endl;
+using std::string;
+using std::initializer_list;
 
 // configuration
 const size_t MAX_COMPONENTS = 32;

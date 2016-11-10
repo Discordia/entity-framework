@@ -34,7 +34,7 @@ void EntityEngine::addSystem(shared_ptr<EntitySystem> entitySystem)
 
     updateFamilyMembershipAll();
 
-    entitySystem->onAddedToEngine(*this, familyEntities);
+    entitySystem->onAddedToEngine(*this);
 }
 
 void EntityEngine::removeSystem(shared_ptr<EntitySystem> entitySystem)
