@@ -11,11 +11,11 @@ public:
 
     int32_t getUUID();
 
-    template<class T>
-    void addComponent(shared_ptr<T> component);
+    template<class T, class... Args>
+    void addComponent(Args&&... args);
 
     template<class T>
-    void removeComponent(shared_ptr<T> component);
+    void removeComponent();
 
     template<class T>
     shared_ptr<T> getComponent();
@@ -40,11 +40,12 @@ private:
     ComponentBitSet familyBits;
 };
 
-template<class T>
-void Entity::addComponent(shared_ptr<T> component)
+template<class T, class... Args>
+void Entity::addComponent(Args&&... args)
 {
     static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Component");
 
+    auto component = shared_ptr<T>(new T{std::forward<Args>(args)...});
     if (componentOperationHandler != nullptr)
     {
         componentOperationHandler->add(shared_from_this(), component, getComponentTypeId<T>());
@@ -56,12 +57,13 @@ void Entity::addComponent(shared_ptr<T> component)
 }
 
 template<class T>
-void Entity::removeComponent(shared_ptr<T> component)
+void Entity::removeComponent()
 {
     static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Component");
 
     if (componentOperationHandler != nullptr)
     {
+        auto component = getComponent<T>();
         componentOperationHandler->remove(shared_from_this(), component, getComponentTypeId<T>());
     }
     else

@@ -15,11 +15,11 @@ int main()
     engine.addSystem(collisionSystem);
 
     shared_ptr<Entity> entity1 = engine.createEntity();
-    entity1->addComponent(shared_ptr<BackgroundCollidableComponent>(new BackgroundCollidableComponent()));
-    entity1->addComponent(shared_ptr<RenderableComponent>(new RenderableComponent(1)));
+    entity1->addComponent<BackgroundCollidableComponent>();
+    entity1->addComponent<RenderableComponent>(1);
 
     shared_ptr<Entity> entity2 = engine.createEntity();
-    entity2->addComponent(shared_ptr<RenderableComponent>(new RenderableComponent(2)));
+    entity2->addComponent<RenderableComponent>(2);
     engine.update(deltaTime);
 
 
@@ -32,21 +32,20 @@ int main()
     // Third frame
     cout << endl << "THIRD FRAME" << endl;
     shared_ptr<Entity> entity3(new Entity());
-    entity3->addComponent(shared_ptr<RenderableComponent>(new RenderableComponent(3)));
+    entity3->addComponent<RenderableComponent>(3);
     engine.addEntity(entity3);
     engine.update(deltaTime);
 
 
     // Forth frame
     cout << endl << "FORTH FRAME" << endl;
-    const shared_ptr<BackgroundCollidableComponent> component = shared_ptr<BackgroundCollidableComponent>(new BackgroundCollidableComponent());
-    entity3->addComponent(component);
+    entity3->addComponent<BackgroundCollidableComponent>();
     engine.update(deltaTime);
 
 
     // Fifth frame
     cout << endl << "FIFTH FRAME" << endl;
-    entity3->removeComponent(component);
+    entity3->removeComponent<BackgroundCollidableComponent>();
     engine.update(deltaTime);
 
 
