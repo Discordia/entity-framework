@@ -3,6 +3,8 @@
 #include "Component.h"
 #include "ComponentOperationHandler.h"
 
+typedef shared_ptr<Entity> entity_ptr;
+
 class Entity : public std::enable_shared_from_this<Entity>
 {
 public:

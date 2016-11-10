@@ -11,8 +11,7 @@ int main()
     cout << "FIRST FRAME" << endl;
 
     EntityEngine engine;
-    const shared_ptr<EntitySystem> collisionSystem = shared_ptr<EntitySystem>(new BackgroundCollisionSystem());
-    engine.addSystem(collisionSystem);
+    engine.addSystem<BackgroundCollisionSystem>();
 
     shared_ptr<Entity> entity1 = engine.createEntity();
     entity1->addComponent<BackgroundCollidableComponent>();
@@ -25,7 +24,7 @@ int main()
 
     // Second frame
     cout << endl << "SECOND FRAME" << endl;
-    engine.addSystem(shared_ptr<EntitySystem>(new RenderingSystem()));
+    engine.addSystem<RenderingSystem>();
     engine.update(deltaTime);
 
 
@@ -56,7 +55,7 @@ int main()
     
     // Seventh frame
     cout << endl << "SEVENTH FRAME" << endl;
-    engine.removeSystem(collisionSystem);
+    engine.removeSystem<BackgroundCollisionSystem>();
     engine.update(deltaTime);
 
     return 0;

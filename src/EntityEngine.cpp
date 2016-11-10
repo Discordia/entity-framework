@@ -3,45 +3,10 @@
 
 int32_t EntityEngine::entityUUIDs = 0;
 
-
-struct EntitySystemPredicate
-{
-    EntitySystemPredicate(shared_ptr<EntitySystem> system)
-        : system(system)
-    {}
-
-    template<class T>
-    bool operator()(T value)
-    {
-        return system == value.first;
-    }
-
-private:
-    shared_ptr<EntitySystem> system;
-};
-
-
 EntityEngine::EntityEngine()
         : updating(false)
 {
     componentOperationHandler = shared_ptr<ComponentOperationHandler>(new ComponentOperationHandler(*this));
-}
-
-void EntityEngine::addSystem(shared_ptr<EntitySystem> entitySystem)
-{
-    vector_ptr<entity_ptr> familyEntities(new vector<entity_ptr>());
-    systems.push_back(make_pair(entitySystem, familyEntities));
-
-    updateFamilyMembershipAll();
-
-    entitySystem->onAddedToEngine(*this);
-}
-
-void EntityEngine::removeSystem(shared_ptr<EntitySystem> entitySystem)
-{
-    EntitySystemPredicate predicate(entitySystem);
-    systems.erase(std::remove_if(systems.begin(), systems.end(), predicate), systems.end());
-    entitySystem->onRemovedFromEngine(*this);
 }
 
 shared_ptr<Entity> EntityEngine::createEntity()

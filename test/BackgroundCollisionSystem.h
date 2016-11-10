@@ -13,6 +13,11 @@ public:
         this->componentFamily = ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()});
     }
 
+    const TypeId getTypeId() override
+    {
+        return getEntitySystemTypeId<BackgroundCollisionSystem>();
+    }
+
     ComponentFamily& getComponentFamily() override
     {
         return *componentFamily;

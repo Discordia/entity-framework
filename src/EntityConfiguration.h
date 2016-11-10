@@ -30,3 +30,4 @@ const size_t MAX_COMPONENTS = 32;
 
 // typedefs
 typedef bitset<MAX_COMPONENTS> ComponentBitSet;
+template<class T> using  vector_ptr = shared_ptr<vector<T>> ;

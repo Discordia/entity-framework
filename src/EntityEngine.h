@@ -4,12 +4,8 @@
 #include "EntityOperation.h"
 #include "ComponentOperationHandler.h"
 #include "ComponentFamily.h"
+#include "EntitySystem.h"
 
-class EntitySystem;
-
-
-template<class T> using  vector_ptr = shared_ptr<vector<T>> ;
-typedef shared_ptr<Entity> entity_ptr;
 typedef pair<shared_ptr<EntitySystem>, vector_ptr<entity_ptr>> system_entities_pair;
 
 class EntityEngine
@@ -17,8 +13,11 @@ class EntityEngine
 public :
     EntityEngine();
 
-    void addSystem(shared_ptr<EntitySystem> entitySystem);
-    void removeSystem(shared_ptr<EntitySystem> entitySystem);
+    template<class T, class... Args>
+    void addSystem(Args&&... args);
+
+    template<class T>
+    void removeSystem();
 
     shared_ptr<Entity> createEntity();
     void addEntity(shared_ptr<Entity> entity);
@@ -53,3 +52,26 @@ private:
     vector<shared_ptr<ComponentOperation>> componentOperations;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
 };
+
+template<class T, class... Args>
+void EntityEngine::addSystem(Args&&... args)
+{
+    auto system = shared_ptr<T>(new T{std::forward<Args>(args)...});
+
+    vector_ptr<entity_ptr> familyEntities(new vector<entity_ptr>());
+    systems.push_back(make_pair(system, familyEntities));
+
+    updateFamilyMembershipAll();
+
+    system->onAddedToEngine(*this);
+}
+
+template<class T>
+void EntityEngine::removeSystem()
+{
+    auto it = std::find_if(systems.begin(), systems.end(), EntitySystemPredicate<T>());
+    auto system = it->first;
+    systems.erase(it);
+
+    system->onRemovedFromEngine(*this);
+}
