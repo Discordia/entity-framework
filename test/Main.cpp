@@ -1,11 +1,7 @@
-#include <memory>
-
 #include "../src/EntityEngine.h"
 
 #include "RenderingSystem.h"
 #include "BackgroundCollisionSystem.h"
-
-using namespace std;
 
 int main()
 {

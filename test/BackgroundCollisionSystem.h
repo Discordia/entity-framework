@@ -1,13 +1,9 @@
 #pragma once
 
-#include <iostream>
 #include "../src/EntitySystem.h"
 #include "../src/EntityEngine.h"
 #include "BackgroundCollidableComponent.h"
 #include "../src/ComponentFamily.h"
-
-using std::cout;
-using std::endl;
 
 class BackgroundCollisionSystem : public EntitySystem
 {
@@ -22,9 +18,9 @@ public:
         return *componentFamily;
     }
 
-    void onAddedToEngine(EntityEngine &engine) override
+    void onAddedToEngine(EntityEngine &engine, vector_ptr<entity_ptr> entities) override
     {
-        cout << "BackgroundCollisionSystem: I have " << engine.getEntitiesFor(*componentFamily)->size() << " entities when added" << endl;
+        cout << "BackgroundCollisionSystem: I have " << entities->size() << " entities when added" << endl;
     }
 
     void onRemovedFromEngine(EntityEngine &engine) override

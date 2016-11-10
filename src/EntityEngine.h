@@ -23,8 +23,6 @@ public :
     void addEntities(vector<entity_ptr>& entities);
     void removeEntity(shared_ptr<Entity> entity);
 
-    const vector_ptr<entity_ptr> getEntitiesFor(ComponentFamily& componentFamily);
-
     bool update(float deltaTime);
     void refresh();
 
@@ -41,15 +39,15 @@ private:
 
     void processPendingComponentOperations();
     void processPendingEntityOperations();
+    void updateFamilyMembershipAll();
     void updateFamilyMembership(shared_ptr<Entity> entity, bool removing = false);
 
 private:
     bool updating;
     static int32_t entityUUIDs;
     vector<shared_ptr<Entity>> entities;
-    vector<shared_ptr<EntitySystem>> systems;
     vector<shared_ptr<EntityOperation>> entityOperations;
     vector<shared_ptr<ComponentOperation>> componentOperations;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
-    unordered_map<ComponentFamily, vector_ptr<entity_ptr>, ComponentFamilyHasher> componentFamilies;
+    vector<pair<shared_ptr<EntitySystem>, vector_ptr<entity_ptr>>> systems;
 };

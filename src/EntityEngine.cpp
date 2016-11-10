@@ -3,6 +3,24 @@
 
 int32_t EntityEngine::entityUUIDs = 0;
 
+
+struct EntitySystemPredicate
+{
+    EntitySystemPredicate(shared_ptr<EntitySystem> system)
+        : system(system)
+    {}
+
+    template<class T>
+    bool operator()(T value)
+    {
+        return system == value.first;
+    }
+
+private:
+    shared_ptr<EntitySystem> system;
+};
+
+
 EntityEngine::EntityEngine()
         : updating(false)
 {
@@ -11,13 +29,18 @@ EntityEngine::EntityEngine()
 
 void EntityEngine::addSystem(shared_ptr<EntitySystem> entitySystem)
 {
-    entitySystem->onAddedToEngine(*this);
-    systems.push_back(entitySystem);
+    vector_ptr<entity_ptr> familyEntities(new vector<entity_ptr>());
+    systems.push_back(make_pair(entitySystem, familyEntities));
+
+    updateFamilyMembershipAll();
+
+    entitySystem->onAddedToEngine(*this, familyEntities);
 }
 
 void EntityEngine::removeSystem(shared_ptr<EntitySystem> entitySystem)
 {
-    systems.erase(std::remove(systems.begin(), systems.end(), entitySystem), systems.end());
+    EntitySystemPredicate predicate(entitySystem);
+    systems.erase(std::remove_if(systems.begin(), systems.end(), predicate), systems.end());
     entitySystem->onRemovedFromEngine(*this);
 }
 
@@ -58,28 +81,6 @@ void EntityEngine::removeEntity(shared_ptr<Entity> entity)
     entityOperations.push_back(operation);
 }
 
-const vector_ptr<entity_ptr> EntityEngine::getEntitiesFor(ComponentFamily& componentFamily)
-{
-    auto keyValueIt = componentFamilies.find(componentFamily);
-
-    if (keyValueIt != componentFamilies.end())
-    {
-        return keyValueIt->second;
-    }
-
-    vector_ptr<entity_ptr> familyEntities(new vector<entity_ptr>());
-    std::pair<ComponentFamily, vector_ptr<entity_ptr>> keyValue(componentFamily, familyEntities);
-    componentFamilies.insert(keyValue);
-
-    for (auto entity : entities)
-    {
-        // TODO: optimization - Only interested in the new family
-        updateFamilyMembership(entity);
-    }
-
-    return familyEntities;
-}
-
 bool EntityEngine::update(float deltaTime)
 {
     refresh();
@@ -90,10 +91,10 @@ bool EntityEngine::update(float deltaTime)
     }
 
     updating = true;
-    for (auto system : systems)
+    for (auto systemPair : systems)
     {
-        auto componentFamily = system->getComponentFamily();
-        auto entities = getEntitiesFor(componentFamily);
+        auto system = systemPair.first;
+        auto entities = systemPair.second;
         system->update(entities, deltaTime);
     }
 
@@ -178,13 +179,23 @@ void EntityEngine::processPendingEntityOperations()
     entityOperations.clear();
 }
 
+// TODO: optimization - Only interested in the new family
+void EntityEngine::updateFamilyMembershipAll()
+{
+    for (auto entity : entities)
+    {
+        updateFamilyMembership(entity);
+    }
+}
+
 void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removing)
 {
     ComponentBitSet& familyBits = entity->getFamilyBits();
     
-    for (auto entry : componentFamilies)
+    for (auto entry : systems)
     {
-        ComponentFamily family =  entry.first;
+        auto system =  entry.first;
+        ComponentFamily& family = system->getComponentFamily();
         size_t familyIndex = family.getIndex();
 
         bool belongsToFamily = familyBits.test(familyIndex);
