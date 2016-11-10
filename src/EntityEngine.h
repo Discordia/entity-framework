@@ -48,6 +48,7 @@ private:
     static int32_t entityUUIDs;
     vector<shared_ptr<Entity>> entities;
     vector<system_entities_pair> systems;
+    unordered_map<TypeId, shared_ptr<EntitySystem>> systemsMap;
     vector<shared_ptr<EntityOperation>> entityOperations;
     vector<shared_ptr<ComponentOperation>> componentOperations;
     shared_ptr<ComponentOperationHandler> componentOperationHandler;
@@ -60,6 +61,7 @@ void EntityEngine::addSystem(Args&&... args)
 
     vector_ptr<entity_ptr> familyEntities(new vector<entity_ptr>());
     systems.push_back(make_pair(system, familyEntities));
+    systemsMap[getEntitySystemTypeId<T>()] = system;
 
     updateFamilyMembershipAll();
 
@@ -69,9 +71,11 @@ void EntityEngine::addSystem(Args&&... args)
 template<class T>
 void EntityEngine::removeSystem()
 {
-    auto it = std::find_if(systems.begin(), systems.end(), EntitySystemPredicate<T>());
-    auto system = it->first;
-    systems.erase(it);
+    auto typeId = getEntitySystemTypeId<T>();
+    auto system = systemsMap[typeId];
 
+    systems.erase(remove_if(systems.begin(), systems.end(), EntitySystemPredicate(system)), systems.end());
+    systemsMap.erase(typeId);
+    
     system->onRemovedFromEngine(*this);
 }

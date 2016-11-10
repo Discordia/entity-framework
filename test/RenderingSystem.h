@@ -12,11 +12,6 @@ public:
         this->componentFamily = ComponentFamily::one({getComponentTypeId<RenderableComponent>()});
     }
 
-    const TypeId getTypeId() override
-    {
-        return getEntitySystemTypeId<RenderingSystem>();
-    }
-
     ComponentFamily& getComponentFamily() override
     {
         return *componentFamily;

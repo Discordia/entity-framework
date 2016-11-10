@@ -58,5 +58,10 @@ int main()
     engine.removeSystem<BackgroundCollisionSystem>();
     engine.update(deltaTime);
 
+    // Eight frame
+    cout << endl  << "EIGTH FRAME" << endl;
+    engine.removeSystem<RenderingSystem>();
+    engine.update(deltaTime);
+
     return 0;
 }

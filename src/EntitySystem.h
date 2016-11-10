@@ -9,7 +9,6 @@ class EntitySystem
 public:
     virtual ~EntitySystem() {}
 
-    virtual const TypeId getTypeId() = 0;
     virtual ComponentFamily& getComponentFamily() = 0;
 
     virtual void onAddedToEngine(EntityEngine& engine) {}
@@ -25,14 +24,18 @@ const TypeId getEntitySystemTypeId()
     return ClassTypeId<EntitySystem>::getTypeId<T>();
 }
 
-template<class T>
 struct EntitySystemPredicate
 {
+    EntitySystemPredicate(shared_ptr<EntitySystem> system)
+        :  system(system)
+    {}
+
     template<class U>
     bool operator()(U value)
     {
-        TypeId typeIdT = getEntitySystemTypeId<T>();
-        TypeId typeIdU = value.first->getTypeId();
-        return typeIdT == typeIdU;
+        return system == value.first;
     }
+
+private:
+    shared_ptr<EntitySystem> system;
 };
