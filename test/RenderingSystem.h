@@ -26,6 +26,21 @@ public:
         cout << "RenderingSystem: I have " << engine.getEntitiesFor(*componentFamily)->size() << " entities when added" << endl;
     }
 
+    void onRemovedFromEngine(EntityEngine &engine) override
+    {
+        cout << "RenderingSystem: I have been removed" << endl;
+    }
+
+    void onEntityAdded(shared_ptr<Entity> entity) override
+    {
+        cout << "RenderingSystem: Entity added" << endl;
+    }
+
+    void onEntityRemoved(shared_ptr<Entity> entity) override
+    {
+        cout << "RenderingSystem: Entity removed" << endl;
+    }
+
     void update(vector_ptr<entity_ptr> entities, float deltaTime) override
     {
         cout << "Rendering..., entities: " << entities->size() << endl;
