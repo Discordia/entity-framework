@@ -207,9 +207,11 @@ void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removi
             if (matches) {
                 familyEntities->push_back(entity);
                 familyBits.set(familyIndex);
+                system->onEntityAdded(entity);
             } else {
                 familyEntities->erase(std::remove(familyEntities->begin(), familyEntities->end(), entity), familyEntities->end());
                 familyBits.reset(familyIndex);
+                system->onEntityRemoved(entity);
             }
         }
     }
