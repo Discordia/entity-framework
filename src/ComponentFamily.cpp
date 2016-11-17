@@ -27,7 +27,7 @@ size_t ComponentFamily::getIndex()
 
 bool ComponentFamily::matches(shared_ptr<Entity> entity)
 {
-    ComponentBitSet &componentBits = entity->getComponentBits();
+    auto &componentBits = entity->getComponentBits();
 
     if (!ComponentFamily::containsAll(componentBits, allBits))
     {
@@ -59,8 +59,8 @@ ComponentFamilyBuilder& ComponentFamily::exclude(initializer_list<size_t> compon
 
 bool ComponentFamily::containsAll(ComponentBitSet &source, ComponentBitSet &other)
 {
-    size_t count = other.count();
-    ComponentBitSet result = source & other;
+    auto count = other.count();
+    auto result = source & other;
 
     return result.count() == count;
 }
@@ -112,14 +112,14 @@ ComponentFamilyBuilder& ComponentFamilyBuilder::exclude(initializer_list<size_t>
 
 ComponentFamilyBuilder::operator shared_ptr<ComponentFamily>()
 {
-    const string familyHash = calcFamilyHash(allBits, oneBits, excludedBits);
+    auto familyHash = calcFamilyHash(allBits, oneBits, excludedBits);
     auto familyIt = ComponentFamilyBuilder::families.find(familyHash);
     if (familyIt != ComponentFamilyBuilder::families.end())
     {
         return familyIt->second;
     }
 
-    shared_ptr<ComponentFamily> family = shared_ptr<ComponentFamily>(new ComponentFamily(allBits, oneBits, excludedBits));
+    auto family = shared_ptr<ComponentFamily>(new ComponentFamily(allBits, oneBits, excludedBits));
     const pair<string, shared_ptr<ComponentFamily>> familyPair = make_pair(familyHash, family);
     ComponentFamilyBuilder::families.insert(familyPair);
 

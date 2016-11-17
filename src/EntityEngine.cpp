@@ -11,9 +11,8 @@ EntityEngine::EntityEngine()
 
 shared_ptr<Entity> EntityEngine::createEntity()
 {
-    shared_ptr<Entity> entity(new Entity(nextEntityUUID(), componentOperationHandler));
-
-    shared_ptr<EntityOperation> operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
+    entity_ptr entity(new Entity(nextEntityUUID(), componentOperationHandler));
+    auto operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
     entityOperations.push_back(operation);
 
     return entity;
@@ -28,7 +27,7 @@ void EntityEngine::addEntity(shared_ptr<Entity> entity)
 
     entity->setUUID(nextEntityUUID());
 
-    shared_ptr<EntityOperation> operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
+    auto operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::ADD));
     entityOperations.push_back(operation);
 }
 
@@ -42,7 +41,7 @@ void EntityEngine::addEntities(vector<entity_ptr>& entities)
 
 void EntityEngine::removeEntity(shared_ptr<Entity> entity)
 {
-    shared_ptr<EntityOperation> operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::REMOVE));
+    auto operation = shared_ptr<EntityOperation>(new EntityOperation(entity, EntityOperation::EntityOperationType::REMOVE));
     entityOperations.push_back(operation);
 }
 
@@ -155,13 +154,13 @@ void EntityEngine::updateFamilyMembershipAll()
 
 void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removing)
 {
-    ComponentBitSet& familyBits = entity->getFamilyBits();
+    auto& familyBits = entity->getFamilyBits();
     
     for (auto entry : systems)
     {
         auto system =  entry.first;
-        ComponentFamily& family = system->getComponentFamily();
-        size_t familyIndex = family.getIndex();
+        auto& family = system->getComponentFamily();
+        auto familyIndex = family.getIndex();
 
         bool belongsToFamily = familyBits.test(familyIndex);
         bool matches = family.matches(entity) && !removing;

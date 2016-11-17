@@ -80,7 +80,7 @@ shared_ptr<T> Entity::getComponent()
     // check that template parameter is derived from class Component
     static_assert(std::is_base_of<Component, T>(), "T needs to be derived from Component");
 
-    TypeId componentId = getComponentTypeId<T>();
+    auto componentId = getComponentTypeId<T>();
     if (componentId >= components.size())
     {
         return shared_ptr<T>();
