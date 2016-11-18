@@ -57,6 +57,11 @@ ComponentFamilyBuilder& ComponentFamily::exclude(initializer_list<size_t> compon
     return familyBuilder.reset().exclude(componentIndices);
 }
 
+ComponentFamilyBuilder& ComponentFamily::none()
+{
+    return familyBuilder.reset().excludeAll();
+}
+
 bool ComponentFamily::containsAll(ComponentBitSet &source, ComponentBitSet &other)
 {
     auto count = other.count();
@@ -107,6 +112,12 @@ ComponentFamilyBuilder& ComponentFamilyBuilder::exclude(initializer_list<size_t>
         excludedBits.set(index);
     }
 
+    return *this;
+}
+
+ComponentFamilyBuilder &ComponentFamilyBuilder::excludeAll()
+{
+    excludedBits.flip();
     return *this;
 }
 

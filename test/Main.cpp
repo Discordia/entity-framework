@@ -2,6 +2,7 @@
 
 #include "RenderingSystem.h"
 #include "BackgroundCollisionSystem.h"
+#include "EnemySystem.h"
 
 int main()
 {
@@ -61,6 +62,7 @@ int main()
     // Eight frame
     cout << endl  << "EIGTH FRAME" << endl;
     engine.removeSystem<RenderingSystem>();
+    engine.addSystem<EnemySystem>();
     engine.update(deltaTime);
 
     return 0;

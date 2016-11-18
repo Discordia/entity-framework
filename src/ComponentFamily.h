@@ -18,6 +18,7 @@ public:
     static ComponentFamilyBuilder& all(initializer_list<size_t> componentIndices);
     static ComponentFamilyBuilder& one(initializer_list<size_t> componentIndices);
     static ComponentFamilyBuilder& exclude(initializer_list<size_t> componentIndices);
+    static ComponentFamilyBuilder& none();
 
 private:
     static bool containsAll(ComponentBitSet& source, ComponentBitSet& other);
@@ -40,6 +41,7 @@ public:
     ComponentFamilyBuilder& all(initializer_list<size_t> componentIndices);
     ComponentFamilyBuilder& one(initializer_list<size_t> componentIndices);
     ComponentFamilyBuilder& exclude(initializer_list<size_t> componentIndices);
+    ComponentFamilyBuilder& excludeAll();
 
     operator shared_ptr<ComponentFamily>();
 
