@@ -38,7 +38,7 @@ public:
         cout << "BackgroundCollisionSystem: Entity removed" << endl;
     }
 
-    void update(vector_ptr<entity_ptr> entities, float deltaTime) override
+    void update(vector_ptr<entity_ptr> entities, EntityEngine& engine, float deltaTime) override
     {
         cout << "BackgroundCollisionSystem: Colliding..., entities: " << entities->size() << endl;
     }

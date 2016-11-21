@@ -37,7 +37,7 @@ public:
         cout << "RenderingSystem: Entity removed" << endl;
     }
 
-    void update(vector_ptr<entity_ptr> entities, float deltaTime) override
+    void update(vector_ptr<entity_ptr> entities, EntityEngine& engine, float deltaTime) override
     {
         cout << "Rendering..., entities: " << entities->size() << endl;
 

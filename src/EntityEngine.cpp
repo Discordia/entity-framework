@@ -59,7 +59,7 @@ bool EntityEngine::update(float deltaTime)
     {
         auto system = systemPair.first;
         auto entities = systemPair.second;
-        system->update(entities, deltaTime);
+        system->update(entities, *this, deltaTime);
     }
 
     updating = false;

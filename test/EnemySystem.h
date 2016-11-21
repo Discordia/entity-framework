@@ -16,7 +16,7 @@ public:
         return *componentFamily;
     }
 
-    void update(vector_ptr<shared_ptr<Entity>> entities, float deltaTime)
+    void update(vector_ptr<shared_ptr<Entity>> entities, EntityEngine* engine, float deltaTime)
     {
         cout << "EnemySystem::update - entities: " << entities->size() << endl;
     }
