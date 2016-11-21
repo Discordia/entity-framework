@@ -6,7 +6,7 @@
 #include "ComponentFamily.h"
 #include "EntitySystem.h"
 
-typedef pair<shared_ptr<EntitySystem>, vector_ptr<entity_ptr>> system_entities_pair;
+using system_entities_pair = pair<shared_ptr<EntitySystem>, vector_ptr<entity_ptr>>;
 
 class EntityEngine
 {

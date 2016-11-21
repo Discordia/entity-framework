@@ -29,5 +29,5 @@ using std::initializer_list;
 const size_t MAX_COMPONENTS = 32;
 
 // typedefs
-typedef bitset<MAX_COMPONENTS> ComponentBitSet;
+using ComponentBitSet = bitset<MAX_COMPONENTS>;
 template<class T> using  vector_ptr = shared_ptr<vector<T>> ;

@@ -2,7 +2,7 @@
 
 #include "EntityConfiguration.h"
 
-typedef std::size_t TypeId;
+using TypeId = std::size_t;
 
 template<typename B>
 class ClassTypeId

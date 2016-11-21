@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "ComponentOperationHandler.h"
 
-typedef shared_ptr<Entity> entity_ptr;
+using entity_ptr =  shared_ptr<Entity>;
 
 class Entity : public std::enable_shared_from_this<Entity>
 {
