@@ -121,20 +121,20 @@ ComponentFamilyBuilder &ComponentFamilyBuilder::excludeAll()
     return *this;
 }
 
-ComponentFamilyBuilder::operator shared_ptr<ComponentFamily>()
+ComponentFamilyBuilder::operator ComponentFamily()
 {
     auto familyHash = calcFamilyHash(allBits, oneBits, excludedBits);
     auto familyIt = ComponentFamilyBuilder::families.find(familyHash);
     if (familyIt != ComponentFamilyBuilder::families.end())
     {
-        return familyIt->second;
+        return *(familyIt->second);
     }
 
     auto family = shared_ptr<ComponentFamily>(new ComponentFamily(allBits, oneBits, excludedBits));
     const pair<string, shared_ptr<ComponentFamily>> familyPair = make_pair(familyHash, family);
     ComponentFamilyBuilder::families.insert(familyPair);
 
-    return family;
+    return *family;
 }
 
 const string ComponentFamilyBuilder::calcFamilyHash(ComponentBitSet &allBits, ComponentBitSet &oneBits, ComponentBitSet &excludedBits)

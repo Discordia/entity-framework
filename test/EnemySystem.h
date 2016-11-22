@@ -7,20 +7,20 @@ class EnemySystem : public EntitySystem
 {
 public:
     EnemySystem()
+        : componentFamily(ComponentFamily::none())
     {
-        componentFamily = ComponentFamily::none();
     }
 
-    ComponentFamily& getComponentFamily()
+    const ComponentFamily& getComponentFamily() const override
     {
-        return *componentFamily;
+        return componentFamily;
     }
 
-    void update(vector_ptr<shared_ptr<Entity>> entities, EntityEngine* engine, float deltaTime)
+    void update(vector_ptr<shared_ptr<Entity>> entities, EntityEngine& engine, float deltaTime) override
     {
         cout << "EnemySystem::update - entities: " << entities->size() << endl;
     }
 
 private:
-    shared_ptr<ComponentFamily> componentFamily;
+    ComponentFamily componentFamily;
 };

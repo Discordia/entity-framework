@@ -9,13 +9,13 @@ class BackgroundCollisionSystem : public EntitySystem
 {
 public:
     BackgroundCollisionSystem()
+        : componentFamily(ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()}))
     {
-        this->componentFamily = ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()});
     }
 
-    ComponentFamily& getComponentFamily() override
+    const ComponentFamily& getComponentFamily() const override
     {
-        return *componentFamily;
+        return componentFamily;
     }
 
     void onAddedToEngine(EntityEngine &engine) override
@@ -44,5 +44,5 @@ public:
     }
 
 private:
-    shared_ptr<ComponentFamily> componentFamily;
+    ComponentFamily componentFamily;
 };

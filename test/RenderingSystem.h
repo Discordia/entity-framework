@@ -8,13 +8,13 @@ class RenderingSystem : public EntitySystem
 {
 public:
     RenderingSystem()
+        : componentFamily(ComponentFamily::one({getComponentTypeId<RenderableComponent>()}))
     {
-        this->componentFamily = ComponentFamily::one({getComponentTypeId<RenderableComponent>()});
     }
 
-    ComponentFamily& getComponentFamily() override
+    const ComponentFamily& getComponentFamily() const override
     {
-        return *componentFamily;
+        return componentFamily;
     }
 
     void onAddedToEngine(EntityEngine &engine) override
@@ -49,5 +49,5 @@ public:
     }
 
 private:
-    shared_ptr<ComponentFamily> componentFamily;
+    ComponentFamily componentFamily;
 };

@@ -45,7 +45,7 @@ public:
     ComponentFamilyBuilder& exclude(initializer_list<size_t> componentIndices);
     ComponentFamilyBuilder& excludeAll();
 
-    operator shared_ptr<ComponentFamily>();
+    operator ComponentFamily();
 
 private:
     static const string calcFamilyHash(ComponentBitSet& allBits, ComponentBitSet& oneBits, ComponentBitSet& excludedBits);

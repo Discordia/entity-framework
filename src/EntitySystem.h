@@ -9,7 +9,7 @@ class EntitySystem
 public:
     virtual ~EntitySystem() {}
 
-    virtual ComponentFamily& getComponentFamily() = 0;
+    virtual const ComponentFamily& getComponentFamily() const = 0;
 
     virtual void onAddedToEngine(EntityEngine& engine) {}
     virtual void onRemovedFromEngine(EntityEngine& engine) {}
