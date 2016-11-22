@@ -3,6 +3,7 @@
 #include "RenderingSystem.h"
 #include "BackgroundCollisionSystem.h"
 #include "EnemySystem.h"
+#include "PlayerSystem.h"
 
 int main()
 {
@@ -60,9 +61,22 @@ int main()
     engine.update(deltaTime);
 
     // Eight frame
-    cout << endl  << "EIGTH FRAME" << endl;
+    cout << endl  << "EIGHT FRAME" << endl;
     engine.removeSystem<RenderingSystem>();
     engine.addSystem<EnemySystem>();
+    engine.update(deltaTime);
+
+    // Ninth frame
+    shared_ptr<Entity> playerEntity(new Entity());
+    playerEntity->addComponent<PlayerComponent>();
+
+    shared_ptr<Entity> controlEntity(new Entity());
+    controlEntity->addComponent<ControlComponent>();
+
+    cout << endl  << "NINTH FRAME" << endl;
+    engine.addSystem<PlayerSystem>();
+    engine.addEntity(playerEntity);
+    engine.addEntity(controlEntity);
     engine.update(deltaTime);
 
     return 0;

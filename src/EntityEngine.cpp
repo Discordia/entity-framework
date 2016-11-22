@@ -45,6 +45,21 @@ void EntityEngine::removeEntity(shared_ptr<Entity> entity)
     entityOperations.push_back(operation);
 }
 
+vector_ptr<entity_ptr> EntityEngine::getEntities(ComponentFamily& family)
+{
+    auto familyIt = familyEntities.find(family);
+    if (familyIt != familyEntities.end()) {
+        return familyIt->second;
+    }
+
+    vector_ptr<entity_ptr> entities(new vector<entity_ptr>());
+    familyEntities[family] = entities;
+
+    updateFamilyMembershipAll();
+
+    return entities;
+}
+
 bool EntityEngine::update(float deltaTime)
 {
     refresh();
@@ -154,29 +169,48 @@ void EntityEngine::updateFamilyMembershipAll()
 
 void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removing)
 {
-    auto& familyBits = entity->getFamilyBits();
-    
     for (auto entry : systems)
     {
         auto system =  entry.first;
         auto& family = system->getComponentFamily();
-        auto familyIndex = family.getIndex();
+        auto familyEntities = entry.second;
 
-        bool belongsToFamily = familyBits.test(familyIndex);
-        bool matches = family.matches(entity) && !removing;
-
-        if (belongsToFamily != matches) {
-            auto familyEntities = entry.second;
-            
-            if (matches) {
-                familyEntities->push_back(entity);
-                familyBits.set(familyIndex);
-                system->onEntityAdded(entity);
-            } else {
-                familyEntities->erase(std::remove(familyEntities->begin(), familyEntities->end(), entity), familyEntities->end());
-                familyBits.reset(familyIndex);
-                system->onEntityRemoved(entity);
-            }
+        if (updateFamilyMembership(entity, removing, family, familyEntities))
+        {
+            system->onEntityAdded(entity);
+        }
+        else
+        {
+            system->onEntityRemoved(entity);
         }
     }
+
+    for (auto entry : familyEntities)
+    {
+        auto& family = entry.first;
+        auto entities = entry.second;
+
+        updateFamilyMembership(entity, removing, family, entities);
+    }
+}
+
+bool EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removing, const ComponentFamily& family,
+                                          vector_ptr<entity_ptr> familyEntities) const
+{
+    auto& familyBits = entity->getFamilyBits();
+    auto familyIndex = family.getIndex();
+    bool belongsToFamily = familyBits.test(familyIndex);
+    bool matches = family.matches(entity) && !removing;
+
+    if (belongsToFamily != matches) {
+        if (matches) {
+            familyEntities->push_back(entity);
+            familyBits.set(familyIndex);
+        } else {
+            familyEntities->erase(remove(familyEntities->begin(), familyEntities->end(), entity), familyEntities->end());
+            familyBits.reset(familyIndex);
+        }
+    }
+    
+    return matches;
 }

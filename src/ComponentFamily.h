@@ -12,8 +12,8 @@ public:
     bool operator==(const ComponentFamily& other) const;
     bool operator!=(const ComponentFamily& other) const;
 
-    size_t getIndex();
-    bool matches(shared_ptr<Entity> entity);
+    size_t getIndex() const;
+    bool matches(shared_ptr<Entity> entity) const;
 
     static ComponentFamilyBuilder& all(initializer_list<size_t> componentIndices);
     static ComponentFamilyBuilder& one(initializer_list<size_t> componentIndices);
@@ -21,10 +21,12 @@ public:
     static ComponentFamilyBuilder& none();
 
 private:
-    static bool containsAll(ComponentBitSet& source, ComponentBitSet& other);
-    static bool intersects(ComponentBitSet& source, ComponentBitSet& other);
+    static bool containsAll(ComponentBitSet& source, const ComponentBitSet& other);
+    static bool intersects(ComponentBitSet& source, const ComponentBitSet& other);
 
 private:
+    friend struct ComponentFamilyHasher;
+
     static size_t family_index;
     static ComponentFamilyBuilder familyBuilder;
 
@@ -54,4 +56,21 @@ private:
     ComponentBitSet excludedBits;
 
     static unordered_map<string, shared_ptr<ComponentFamily>> families;
+};
+
+struct ComponentFamilyHasher
+{
+    template <class T>
+    inline void hash_combine(std::size_t & seed, const T & v) const
+    {
+        std::hash<T> hasher;
+        seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    }
+
+    inline std::size_t operator()(const ComponentFamily& componentFamily) const
+    {
+        size_t seed = 0;
+        hash_combine(seed, componentFamily.index);
+        return seed;
+    }
 };
