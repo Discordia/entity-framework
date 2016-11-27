@@ -9,7 +9,7 @@ class BackgroundCollisionSystem : public EntitySystem
 {
 public:
     BackgroundCollisionSystem()
-        : componentFamily(ComponentFamily::one({getComponentTypeId<BackgroundCollidableComponent>()}))
+        : componentFamily(ComponentFamily::all({getComponentTypeId<BackgroundCollidableComponent>(), getComponentTypeId<RenderableComponent>()}))
     {
     }
 

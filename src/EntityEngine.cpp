@@ -175,42 +175,42 @@ void EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removi
         auto& family = system->getComponentFamily();
         auto familyEntities = entry.second;
 
-        if (updateFamilyMembership(entity, removing, family, familyEntities))
-        {
-            system->onEntityAdded(entity);
-        }
-        else
-        {
-            system->onEntityRemoved(entity);
+        auto& familyBits = entity->getFamilyBits();
+        auto familyIndex = family.getIndex();
+        bool belongsToFamily = familyBits.test(familyIndex);
+        bool matches = family.matches(entity) && !removing;
+
+        if (belongsToFamily != matches) {
+            if (matches) {
+                familyEntities->push_back(entity);
+                familyBits.set(familyIndex);
+                system->onEntityAdded(entity);
+            } else {
+                familyEntities->erase(remove(familyEntities->begin(), familyEntities->end(), entity), familyEntities->end());
+                familyBits.reset(familyIndex);
+                system->onEntityRemoved(entity);
+            }
         }
     }
 
     for (auto entry : familyEntities)
     {
         auto& family = entry.first;
-        auto entities = entry.second;
+        auto familyEntities = entry.second;
 
-        updateFamilyMembership(entity, removing, family, entities);
-    }
-}
+        auto& familyBits = entity->getFamilyBits();
+        auto familyIndex = family.getIndex();
+        bool belongsToFamily = familyBits.test(familyIndex);
+        bool matches = family.matches(entity) && !removing;
 
-bool EntityEngine::updateFamilyMembership(shared_ptr<Entity> entity, bool removing, const ComponentFamily& family,
-                                          vector_ptr<entity_ptr> familyEntities) const
-{
-    auto& familyBits = entity->getFamilyBits();
-    auto familyIndex = family.getIndex();
-    bool belongsToFamily = familyBits.test(familyIndex);
-    bool matches = family.matches(entity) && !removing;
-
-    if (belongsToFamily != matches) {
-        if (matches) {
-            familyEntities->push_back(entity);
-            familyBits.set(familyIndex);
-        } else {
-            familyEntities->erase(remove(familyEntities->begin(), familyEntities->end(), entity), familyEntities->end());
-            familyBits.reset(familyIndex);
+        if (belongsToFamily != matches) {
+            if (matches) {
+                familyEntities->push_back(entity);
+                familyBits.set(familyIndex);
+            } else {
+                familyEntities->erase(remove(familyEntities->begin(), familyEntities->end(), entity), familyEntities->end());
+                familyBits.reset(familyIndex);
+            }
         }
     }
-    
-    return matches;
 }

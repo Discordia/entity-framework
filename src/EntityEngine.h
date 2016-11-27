@@ -43,11 +43,6 @@ private:
     void processPendingEntityOperations();
     void updateFamilyMembershipAll();
     void updateFamilyMembership(shared_ptr<Entity> entity, bool removing = false);
-    bool updateFamilyMembership(
-            shared_ptr<Entity> entity,
-            bool removing,
-            const ComponentFamily& family,
-            vector_ptr<entity_ptr> familyEntities) const;
 
 private:
     bool updating;
