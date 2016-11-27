@@ -9,7 +9,7 @@ class PlayerSystem : public EntitySystem
 {
 public:
     PlayerSystem()
-        : componentFamily(ComponentFamily::one({getComponentTypeId<PlayerComponent>()}))
+        : componentFamily(ComponentFamily::create<All<PlayerComponent>>())
     {
     }
 
@@ -20,7 +20,7 @@ public:
 
     void onAddedToEngine(EntityEngine& engine) override
     {
-        ComponentFamily controlFamily = ComponentFamily::one({getComponentTypeId<ControlComponent>()});
+        ComponentFamily controlFamily = ComponentFamily::create<All<ControlComponent>>();
         controlEntities = engine.getEntities(controlFamily);
     }
 

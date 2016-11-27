@@ -8,7 +8,7 @@ class RenderingSystem : public EntitySystem
 {
 public:
     RenderingSystem()
-        : componentFamily(ComponentFamily::one({getComponentTypeId<RenderableComponent>()}))
+        : componentFamily(ComponentFamily::create<All<RenderableComponent>>())
     {
     }
 

@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Entity.h"
-
-class ComponentFamilyBuilder;
+#include "ComponentFamilyBuilder.h"
 
 class ComponentFamily
 {
 public:
-    ComponentFamily(ComponentBitSet allBits, ComponentBitSet oneBits, ComponentBitSet excludedBits);
+    ComponentFamily();
+    ComponentFamily(ComponentBitSet allBits, ComponentBitSet excludedBits);
 
     bool operator==(const ComponentFamily& other) const;
     bool operator!=(const ComponentFamily& other) const;
@@ -15,10 +15,10 @@ public:
     size_t getIndex() const;
     bool matches(shared_ptr<Entity> entity) const;
 
-    static ComponentFamilyBuilder& all(initializer_list<size_t> componentIndices);
-    static ComponentFamilyBuilder& one(initializer_list<size_t> componentIndices);
-    static ComponentFamilyBuilder& exclude(initializer_list<size_t> componentIndices);
-    static ComponentFamilyBuilder& none();
+    static ComponentFamily none();
+
+    template <class R, class E>
+    static ComponentFamily create();
 
 private:
     static bool containsAll(ComponentBitSet& source, const ComponentBitSet& other);
@@ -32,30 +32,7 @@ private:
 
     size_t index;
     ComponentBitSet allBits;
-    ComponentBitSet oneBits;
     ComponentBitSet excludedBits;
-};
-
-class ComponentFamilyBuilder
-{
-public:
-    ComponentFamilyBuilder& reset();
-    ComponentFamilyBuilder& all(initializer_list<size_t> componentIndices);
-    ComponentFamilyBuilder& one(initializer_list<size_t> componentIndices);
-    ComponentFamilyBuilder& exclude(initializer_list<size_t> componentIndices);
-    ComponentFamilyBuilder& excludeAll();
-
-    operator ComponentFamily();
-
-private:
-    static const string calcFamilyHash(ComponentBitSet& allBits, ComponentBitSet& oneBits, ComponentBitSet& excludedBits);
-
-private:
-    ComponentBitSet allBits;
-    ComponentBitSet oneBits;
-    ComponentBitSet excludedBits;
-
-    static unordered_map<string, shared_ptr<ComponentFamily>> families;
 };
 
 struct ComponentFamilyHasher
@@ -74,3 +51,36 @@ struct ComponentFamilyHasher
         return seed;
     }
 };
+
+
+template <class... Args>
+struct TypeList {};
+
+struct RequireList{};
+struct ExcludeList{};
+
+template <class... Args>
+static ComponentBitSet types(TypeList<Args...> unused) { return ComponentBitSet(); }
+
+template <class T, class... Args>
+static ComponentBitSet types(TypeList<T, Args...> unused)
+{
+    static_assert(std::is_base_of<Component, T>::value, "Invalid component");
+    return ComponentBitSet().set(getComponentTypeId<T>()) | types(TypeList<Args...>());
+}
+
+template <class... Args>
+struct All : TypeList<Args...>, RequireList {};
+
+template <class... Args>
+struct Excludes : TypeList<Args...>, ExcludeList {};
+
+struct None : TypeList<>, ExcludeList {};
+
+template <class R, class E = None>
+ComponentFamily ComponentFamily::create()
+{
+    static_assert(std::is_base_of<RequireList, R>::value, "R is not a RequireList");
+    return familyBuilder.create(types(R{}), ComponentBitSet());
+}
+
