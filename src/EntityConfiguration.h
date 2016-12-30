@@ -10,6 +10,7 @@
 #include <vector>
 #include <utility>
 #include <iostream>
+#include <algorithm>
 
 using std::unique_ptr;
 using std::shared_ptr;
@@ -24,6 +25,7 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::initializer_list;
+using std::remove_if;
 
 // configuration
 const size_t MAX_COMPONENTS = 32;

@@ -20,8 +20,25 @@ public:
 
     void onAddedToEngine(EntityEngine& engine) override
     {
+        cout << "PlayerSystem: I have been added to the engine" << endl;
+
         ComponentFamily controlFamily = ComponentFamily::create<All<ControlComponent>>();
         controlEntities = engine.getEntities(controlFamily);
+    }
+
+    void onRemovedFromEngine(EntityEngine &engine) override
+    {
+        cout << "PlayerSystem: I have been removed" << endl;
+    }
+
+    void onEntityAdded(shared_ptr<Entity> entity) override
+    {
+        cout << "PlayerSystem: Entity added" << endl;
+    }
+
+    void onEntityRemoved(shared_ptr<Entity> entity) override
+    {
+        cout << "PlayerSystem: Entity removed" << endl;
     }
 
     void update(vector_ptr<shared_ptr<Entity>> entities, EntityEngine& engine, float deltaTime) override

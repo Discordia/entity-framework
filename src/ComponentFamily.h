@@ -17,7 +17,7 @@ public:
 
     static ComponentFamily none();
 
-    template <class R, class E>
+    template <class R>
     static ComponentFamily create();
 
 private:
@@ -57,7 +57,6 @@ template <class... Args>
 struct TypeList {};
 
 struct RequireList{};
-struct ExcludeList{};
 
 template <class... Args>
 static ComponentBitSet types(TypeList<Args...> unused) { return ComponentBitSet(); }
@@ -72,12 +71,7 @@ static ComponentBitSet types(TypeList<T, Args...> unused)
 template <class... Args>
 struct All : TypeList<Args...>, RequireList {};
 
-template <class... Args>
-struct Excludes : TypeList<Args...>, ExcludeList {};
-
-struct None : TypeList<>, ExcludeList {};
-
-template <class R, class E = None>
+template <class R>
 ComponentFamily ComponentFamily::create()
 {
     static_assert(std::is_base_of<RequireList, R>::value, "R is not a RequireList");
