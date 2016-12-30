@@ -3,6 +3,7 @@
 #include "../src/EntitySystem.h"
 #include "BackgroundCollidableComponent.h"
 #include "RenderableComponent.h"
+#include "../src/ComponentFamily.h"
 
 class RenderingSystem : public EntitySystem
 {

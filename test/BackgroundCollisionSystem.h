@@ -4,6 +4,7 @@
 #include "../src/EntityEngine.h"
 #include "BackgroundCollidableComponent.h"
 #include "../src/ComponentFamily.h"
+#include "RenderableComponent.h"
 
 class BackgroundCollisionSystem : public EntitySystem
 {
